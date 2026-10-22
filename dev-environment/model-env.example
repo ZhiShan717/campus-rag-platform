@@ -1,0 +1,13 @@
+# Non-secret model configuration. All paths below are relative to this workspace.
+# Enter-DevEnvironment.ps1 exports absolute paths in its terminal process.
+OLLAMA_BASE_URL=http://127.0.0.1:11434
+OLLAMA_MODEL=qwen3:1.7b
+OLLAMA_KEEP_ALIVE=0
+OLLAMA_NUM_CTX=2048
+EMBEDDING_MODEL_PATH=.local/models/bge-large-zh-v1.5
+EMBEDDING_DIMENSIONS=1024
+RERANKER_MODEL_PATH=.local/models/bge-reranker-base
+
+# Pass keep_alive=0 and options.num_ctx=2048 in Ollama requests.
+# BGE large outputs 1024 dimensions. An ES dense_vector must use dims=1024.
+# Do not truncate the vector to match the manual's incorrect 768 value.

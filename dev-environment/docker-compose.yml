@@ -1,0 +1,232 @@
+# Independent development infrastructure. No business application or tables.
+# Always use Start-Services.ps1, or supply --project-directory and --env-file
+# using absolute paths. Never run `docker compose config` without --quiet:
+# the expanded configuration contains local passwords.
+name: campus-rag-dev
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    mem_limit: 768m
+    ports:
+      # The computer already runs MySQL80 on 3306; keep it undisturbed.
+      - "127.0.0.1:${MYSQL_PORT:-13306}:3306"
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Run Initialize-Environment.ps1}
+      MYSQL_DATABASE: campus_rag
+      MYSQL_USER: campus_dev
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Run Initialize-Environment.ps1}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --innodb-buffer-pool-size=256M
+      - --max-connections=100
+      - --performance-schema=OFF
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_PASSWORD\" mysql -u\"$$MYSQL_USER\" -D campus_rag -Nse 'SELECT 1' >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+    logging: *logging
+
+  redis:
+    image: redis:7.4.2-alpine
+    restart: unless-stopped
+    mem_limit: 256m
+    ports:
+      - "127.0.0.1:6379:6379"
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Run Initialize-Environment.ps1}
+    command:
+      - /bin/sh
+      - -ec
+      - exec redis-server --appendonly yes --maxmemory 192mb --maxmemory-policy noeviction --requirepass "$$REDIS_PASSWORD"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "REDISCLI_AUTH=\"$$REDIS_PASSWORD\" redis-cli ping | grep -q PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+    logging: *logging
+
+  elasticsearch:
+    image: campus-rag-dev/elasticsearch-ik:8.11.4
+    build:
+      context: ./elasticsearch
+      args:
+        ELASTIC_VERSION: "8.11.4"
+    restart: unless-stopped
+    mem_limit: 1280m
+    ports:
+      - "127.0.0.1:9200:9200"
+    environment:
+      discovery.type: single-node
+      cluster.name: campus-rag-dev
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:?Run Initialize-Environment.ps1}
+      xpack.security.enabled: "true"
+      xpack.security.http.ssl.enabled: "false"
+      xpack.security.transport.ssl.enabled: "false"
+      # Small-machine development mode: no host vm.max_map_count changes.
+      node.store.allow_mmap: "false"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail --user \"elastic:$$ELASTIC_PASSWORD\" 'http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s' >/dev/null"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 90s
+    logging: *logging
+
+  minio:
+    # Original MinIO registries/binaries were removed upstream in 2026.
+    # OpenEBS republishes the same 2024 release; pin its verified index digest.
+    # https://github.com/openebs/openebs/pull/4337
+    image: openebs/minio:RELEASE.2024-12-18T13-15-44Z@sha256:bb04e41fc1b876c5f752ea3c5957a73db73a1fb7df49ce6bb95f722f0abfb1ba
+    restart: unless-stopped
+    mem_limit: 512m
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:?Run Initialize-Environment.ps1}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?Run Initialize-Environment.ps1}
+      MINIO_BROWSER_REDIRECT_URL: http://127.0.0.1:9001
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "--silent", "--fail", "http://localhost:9000/minio/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 15
+      start_period: 30s
+    logging: *logging
+
+  nacos:
+    image: nacos/nacos-server:v2.3.2
+    restart: unless-stopped
+    mem_limit: 768m
+    ports:
+      - "127.0.0.1:8848:8848"
+      - "127.0.0.1:9848:9848"
+      - "127.0.0.1:9849:9849"
+    environment:
+      MODE: standalone
+      PREFER_HOST_MODE: hostname
+      # Standalone embedded Derby persists in /home/nacos/data.
+      JVM_XMS: 256m
+      JVM_XMX: 512m
+      JVM_XMN: 128m
+      NACOS_AUTH_ENABLE: "true"
+      NACOS_AUTH_TOKEN: ${NACOS_AUTH_TOKEN:?Run Initialize-Environment.ps1}
+      NACOS_AUTH_IDENTITY_KEY: ${NACOS_AUTH_IDENTITY_KEY:?Run Initialize-Environment.ps1}
+      NACOS_AUTH_IDENTITY_VALUE: ${NACOS_AUTH_IDENTITY_VALUE:?Run Initialize-Environment.ps1}
+      NACOS_AUTH_USER_AGENT_AUTH_WHITE_ENABLE: "false"
+      TOMCAT_ACCESSLOG_ENABLED: "false"
+    volumes:
+      - nacos-data:/home/nacos/data
+      - nacos-logs:/home/nacos/logs
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail http://localhost:8848/nacos/v1/console/health/readiness >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 90s
+    logging: *logging
+
+  rocketmq-volume-init:
+    profiles: [messaging]
+    image: apache/rocketmq:5.3.1
+    # The upstream image runs as uid/gid 3000, while fresh named volumes have
+    # root-owned mount points. Initialize their ownership once before Java runs.
+    user: "0:0"
+    network_mode: none
+    restart: "no"
+    mem_limit: 64m
+    entrypoint: ["/bin/sh", "-ec"]
+    command: ["chown 3000:3000 /volumes/namesrv-logs /volumes/broker-logs /volumes/broker-store"]
+    volumes:
+      - rocketmq-namesrv-logs:/volumes/namesrv-logs
+      - rocketmq-broker-logs:/volumes/broker-logs
+      - rocketmq-broker-store:/volumes/broker-store
+    logging: *logging
+
+  namesrv:
+    profiles: [messaging]
+    image: apache/rocketmq:5.3.1
+    restart: unless-stopped
+    mem_limit: 384m
+    ports:
+      - "127.0.0.1:9876:9876"
+    environment:
+      JAVA_OPT_EXT: -Xms128m -Xmx192m -Xmn64m
+    command: sh mqnamesrv
+    depends_on:
+      rocketmq-volume-init:
+        condition: service_completed_successfully
+    volumes:
+      - rocketmq-namesrv-logs:/home/rocketmq/logs
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/9876' >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    logging: *logging
+
+  broker:
+    profiles: [messaging]
+    image: apache/rocketmq:5.3.1
+    restart: unless-stopped
+    mem_limit: 1024m
+    ports:
+      - "127.0.0.1:10909:10909"
+      - "127.0.0.1:10911:10911"
+      - "127.0.0.1:10912:10912"
+    environment:
+      NAMESRV_ADDR: namesrv:9876
+      # Upstream 5.3.1 runbroker.sh appends JAVA_OPT_EXT after its default heap
+      # and direct-memory flags, so these final values override 8 GiB / 15 GiB.
+      JAVA_OPT_EXT: -Xms256m -Xmx384m -XX:MaxDirectMemorySize=256m
+    command: sh mqbroker -c /home/rocketmq/broker.conf
+    depends_on:
+      rocketmq-volume-init:
+        condition: service_completed_successfully
+      namesrv:
+        condition: service_healthy
+    volumes:
+      - ./rocketmq/broker.conf:/home/rocketmq/broker.conf:ro
+      - rocketmq-broker-store:/home/rocketmq/store
+      - rocketmq-broker-logs:/home/rocketmq/logs
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/10911' >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 45s
+    logging: *logging
+
+volumes:
+  mysql-data:
+  redis-data:
+  elasticsearch-data:
+  minio-data:
+  nacos-data:
+  nacos-logs:
+  rocketmq-namesrv-logs:
+  rocketmq-broker-store:
+  rocketmq-broker-logs:

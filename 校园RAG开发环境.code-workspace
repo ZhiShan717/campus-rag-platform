@@ -1,0 +1,27 @@
+{
+  "folders": [{ "path": "." }],
+  "settings": {
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+    "python.terminal.activateEnvironment": false,
+    "java.configuration.runtimes": [
+      { "name": "JavaSE-17", "path": "D:\\JDK", "default": true }
+    ],
+    "maven.executable.path": "D:\\maven\\apache-maven-3.9.9-bin\\apache-maven-3.9.9\\bin\\mvn.cmd",
+    "terminal.integrated.profiles.windows": {
+      "Campus RAG": {
+        "path": "${env:WINDIR}\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "args": ["-NoLogo", "-NoProfile", "-NoExit", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\dev-environment\\Enter-DevEnvironment.ps1"]
+      }
+    },
+    "terminal.integrated.defaultProfile.windows": "Campus RAG",
+    "files.watcherExclude": {
+      "**/.local/**": true,
+      "**/.venv/**": true,
+      "**/.setup/**": true
+    },
+    "search.exclude": { "**/.local": true, "**/.venv": true, "**/.setup": true }
+  },
+  "extensions": {
+    "recommendations": ["vscjava.vscode-java-pack", "ms-python.python", "ms-python.vscode-pylance", "vue.volar"]
+  }
+}

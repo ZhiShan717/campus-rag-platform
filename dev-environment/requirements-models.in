@@ -1,0 +1,4 @@
+# CPU-only model tooling. Install with Install-ModelDependencies.ps1.
+# Existing RAG SDK pins remain constraints in requirements-rag.lock.txt.
+torch==2.14.1+cpu
+sentence-transformers==6.2.0

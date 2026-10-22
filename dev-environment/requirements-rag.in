@@ -1,0 +1,26 @@
+# Lightweight Python 3.11 development baseline. No application or model weights.
+# The manual lists minimum versions; there is no existing business source to migrate.
+# Use maintained 1.x LangChain/LangGraph because old checkpoint releases have known
+# deserialization issues. Lock all resolved versions after installation.
+# https://pypi.org/project/langchain/
+# https://pypi.org/project/langgraph/
+# https://github.com/langchain-ai/langgraph/security/advisories/GHSA-fjqc-hq36-qh5p
+# https://github.com/langchain-ai/langchain/security/advisories/GHSA-pjwx-r37v-7724
+langchain>=1.4.7,<2
+langchain-core>=1.6.13,<2
+langgraph>=1.2.12,<1.3
+langgraph-checkpoint>=4.1.1,<5
+# MCP v2 is the current official SDK for a new project; no legacy MCP code exists.
+# https://github.com/modelcontextprotocol/python-sdk/blob/main/docs/get-started/installation.md
+mcp>=2,<3
+fastapi>=0.115,<1
+uvicorn>=0.30,<1
+httpx>=0.27,<1
+python-dotenv>=1,<2
+# Keep the client on the server's 8.11 feature line.
+# https://www.elastic.co/docs/reference/elasticsearch/clients/python
+elasticsearch>=8.11,<8.12
+redis>=5,<8
+minio>=7,<8
+pymysql>=1,<2
+pypdf>=6,<7
