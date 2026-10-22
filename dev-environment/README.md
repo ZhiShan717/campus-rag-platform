@@ -39,6 +39,8 @@ VS Code 可以打开上一级目录的 `校园RAG开发环境.code-workspace`；
 | pip / uv | 26.2.2 / 0.13.5 | 安装于 `.venv` |
 | Node.js / npm | 24.22.0 / 11.19.1 | 使用现有安装；npm 官方源连通性通过 |
 | Git | 2.55.0.windows.3 | 使用现有安装与已有姓名、邮箱 |
+| GitHub Desktop | 3.6.7 | `D:\github\GitHubDesktop`；已登录 ZhiShan717 |
+| GitHub CLI | 2.103.0 | `.local\GitHubCLI`；已授权团队私有仓库 |
 | VS Code | 1.142.0 | 使用现有安装 |
 | Docker Desktop | 4.96.2 | `.local\DockerDesktop`，当前用户安装，WSL2 后端 |
 | Docker Engine / Compose | 29.9.2 / 5.6.1 | Linux 容器；使用 `docker compose` 命令 |
@@ -47,6 +49,16 @@ VS Code 可以打开上一级目录的 `校园RAG开发环境.code-workspace`；
 开发终端仅在自身进程设置 PATH、JAVA_HOME、MAVEN_HOME、虚拟环境、模型路径和 Docker 客户端上下文；本机原有 Python 3.14 保留。Python AI 开发依赖已在 `.venv` 安装，版本见 `requirements-rag.lock.txt`；使用 `Install-PythonDependencies.ps1` 可复现安装，`Test-PythonDependencies.py` 验证实际 SDK 调用和依赖一致性。
 
 手册所列 LangChain/LangGraph 版本为下限。新环境采用当前相容的 LangChain 1.4.7、LangGraph 1.2.16、MCP 2.3.0 和 FastAPI 0.159.1，并锁定全部解析后的依赖。当前没有旧业务源码需要迁移；业务代码建立后应使用该代码自己的锁文件。
+
+## GitHub Desktop 登录与使用
+
+GitHub Desktop 已独立登录 `ZhiShan717`，已验证普通入口重新打开后保留登录状态，并成功访问私有仓库。已将本机配置完成的原目录 `D:\campus_RAG_work` 加入应用；另行克隆的目录保留。
+
+桌面、开始菜单和 `D:\github` 的 **GitHub Desktop** 快捷方式统一使用 `Open-GitHubDesktop.ps1`；也可双击上一级的 `启动GitHub.cmd`。该入口每次读取 Windows 当前启用的代理，只传给应用及其 Git 子进程，同时配置 Electron 的代理参数。它保留 HTTPS 证书验证，不修改全局 Git 或系统网络设置。
+
+若 GitHub 官方网页已经显示 **OAuth application authorized**，但未返回应用：保持该授权完成页打开，双击上一级的 `完成GitHub登录.cmd`。辅助入口只将 Microsoft Edge 上 GitHub 官方完成页中的回调交给本机已注册的 D 盘应用，不保存或输出一次性授权参数，不代替账号登录或授权。
+
+原快捷方式备份、登录与同步记录位于 `.setup\state` 和 `.setup\logs\github-desktop-login-check.log`。日常开发使用原项目目录，其中已有虚拟环境、模型和服务数据。
 
 ## 基础服务与连接信息
 

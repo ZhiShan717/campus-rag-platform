@@ -7,6 +7,7 @@
 ## 本机使用
 
 - 双击 `启动Docker.cmd`，或桌面的 **Docker Desktop**，打开使用正确 D 盘配置的 Docker 界面。
+- GitHub Desktop 使用桌面图标或 `启动GitHub.cmd` 打开，入口会自动沿用本机 Windows 代理。若网页登录已授权却未返回应用，保持该网页打开后运行 `完成GitHub登录.cmd`。
 - 负责人日常可双击 `启动负责人环境.cmd`，一次启动七项基础服务与 Ollama API。
 - 双击 `启动基础服务.cmd` 启动五项基础服务；完整消息环境在开发终端运行 `./dev-environment/Start-Services.ps1 -Messaging`。
 - 双击 `启动开发终端.cmd`，使用本项目的 Java 17、Python 3.11 虚拟环境、Maven、Node.js 和模型配置。
