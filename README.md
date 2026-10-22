@@ -4,6 +4,13 @@
 
 团队私有仓库：[ZhiShan717/campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform)。本目录已初始化为 `main` 分支，GitHub 凭据通过官方 GitHub CLI 管理。
 
+## 团队资料与目录导航
+
+- 发给队员：[团队协作与接入](docs/团队协作与接入.md)，包含仓库权限、环境版本、接入步骤和待确认事项。
+- 文件用途与清理范围：[文件夹说明](docs/文件夹说明.md)。
+- 原始资料：[环境安装与首次运行手册](docs/参考资料/校园级RAG知识库平台环境安装与首次运行手册.pdf)。手册中的仓库占位符和版本差异，以本仓库说明为准。
+- 负责人本机操作：[环境说明](dev-environment/README.md)。根目录的启动入口保留，已安装工具、模型和运行数据继续使用原路径。
+
 ## 本机使用
 
 - 双击 `启动Docker.cmd`，或桌面的 **Docker Desktop**，打开使用正确 D 盘配置的 Docker 界面。

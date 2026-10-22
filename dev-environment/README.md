@@ -1,6 +1,6 @@
 # 本机开发环境说明
 
-配置日期：2026-10-22，补充验收：2026-10-23。按文件夹中的《校园级RAG知识库平台环境安装与首次运行手册》准备，按项目负责人角色配置开发工具、完整基础服务、Python AI 依赖和本地模型。团队私有仓库已创建：[campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform)，尚无业务应用源码。
+配置日期：2026-10-22，补充验收：2026-10-23。按[《校园级RAG知识库平台环境安装与首次运行手册》](../docs/参考资料/校园级RAG知识库平台环境安装与首次运行手册.pdf)准备，按项目负责人角色配置开发工具、完整基础服务、Python AI 依赖和本地模型。团队私有仓库已创建：[campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform)，尚无业务应用源码。队员接入请先看[团队协作与接入](../docs/团队协作与接入.md)，目录整理见[文件夹说明](../docs/文件夹说明.md)。
 
 下文 `.local`、`.venv`、`.setup` 均相对于 `D:\campus_RAG_work`；凭据文件的完整位置为 `D:\campus_RAG_work\dev-environment\.env`。
 
@@ -134,7 +134,7 @@ CPU 模型依赖为 PyTorch 2.14.1+cpu、Sentence Transformers 6.2.0、Transform
 - `Test-Services.ps1`：实时验证容器健康、MinIO 认证、Nacos 随机密码、ES IK 中文分词；加 `-Messaging` 验证消息服务。
 - RocketMQ 首次启动会运行一次数据卷目录权限初始化，随后以镜像原有的非 root 用户运行 NameServer 和 Broker。
 - `.setup\logs\ollama-stdout.log`、`ollama-stderr.log`：由开发脚本管理的模型服务日志。
-- `.setup\downloads`：本次安装包缓存；Python、Docker、Ollama 安装包均已核验官方 Authenticode 签名。
+- 安装包、下载缓存与排障截图在 2026-10-23 整理时清理；保留已安装工具、模型、服务数据和关键检查记录。重新安装模型依赖时，脚本会重新下载并校验所需文件。
 - 根目录及本目录的 `.gitignore` 已排除凭据、模型、虚拟环境、安装包和运行数据。
 
 基础服务总内存上限约 3.5GiB；消息组件额外约 1.4GiB，上限不等于实际占用。无需常驻时使用停止入口释放资源；停止不会删除命名数据卷。
