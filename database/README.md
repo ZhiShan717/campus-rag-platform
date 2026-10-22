@@ -10,4 +10,4 @@
 
 当前只建立目录，尚无业务表或索引定义；没有执行数据库导入或变更。模型使用 `BAAI/bge-large-zh-v1.5`，后续向量字段维度统一为 **1024**。
 
-MySQL 业务结构与 Java 实体、Python 检索字段确定后，再提交首份迁移。迁移工具和执行方式待团队统一；新增 SQL 文件不会自动运行。开发凭据由 [环境初始化脚本](../dev-environment/Initialize-Environment.ps1)在各成员本机生成，不能写入迁移脚本。
+MySQL 业务结构与 Java 实体、Python 检索字段确定后，再提交首份迁移。迁移工具和执行方式待团队统一；新增 SQL 文件不会自动运行。开发凭据由 [环境初始化脚本](../environment/Initialize-Environment.ps1)在各成员本机生成，不能写入迁移脚本。

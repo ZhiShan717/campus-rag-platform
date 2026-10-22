@@ -1,5 +1,5 @@
 {
-  "folders": [{ "path": "." }],
+  "folders": [{ "path": ".." }],
   "settings": {
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
     "python.terminal.activateEnvironment": false,
@@ -10,7 +10,7 @@
     "terminal.integrated.profiles.windows": {
       "Campus RAG": {
         "path": "${env:WINDIR}\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-        "args": ["-NoLogo", "-NoProfile", "-NoExit", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\dev-environment\\Enter-DevEnvironment.ps1"]
+        "args": ["-NoLogo", "-NoProfile", "-NoExit", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\environment\\Enter-DevEnvironment.ps1"]
       }
     },
     "terminal.integrated.defaultProfile.windows": "Campus RAG",

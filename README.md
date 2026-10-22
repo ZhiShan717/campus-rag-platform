@@ -1,44 +1,26 @@
 # 校园 RAG 知识库平台
 
-本仓库包含 Java 平台、Python RAG 运行时、Vue 前端的项目目录骨架，以及已验证的负责人 Windows 开发环境。六个 Java 模块已接入 Java 17 聚合 POM；Python、前端、数据库、部署和测试目录已建立。业务功能和可运行的业务应用仍待实现。
+团队私有仓库：[ZhiShan717/campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform)，默认分支 `main`。
 
-团队私有仓库：[ZhiShan717/campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform)。本目录已初始化为 `main` 分支，GitHub 凭据通过官方 GitHub CLI 管理。
+本仓库集中管理 Java 平台、Python RAG 运行时和 Vue 前端。六个 Java 模块已接入 Java 17 聚合 POM，Python、前端、数据库、部署和测试目录已建立；当前为工程目录骨架，业务功能和可运行的业务应用仍待实现。
 
-## 团队资料与目录导航
+## 项目入口
 
-- 开发入口：[项目目录与开发约定](docs/项目目录与开发约定.md)，说明模块职责、目录结构和当前完成范围。
-- 发给队员：[团队协作与接入](docs/团队协作与接入.md)，包含仓库权限、环境版本、接入步骤和待确认事项。
-- 文件用途与清理范围：[文件夹说明](docs/文件夹说明.md)。
-- 原始资料：[环境安装与首次运行手册](docs/参考资料/校园级RAG知识库平台环境安装与首次运行手册.pdf)。手册中的仓库占位符和版本差异，以本仓库说明为准。
-- 负责人本机操作：[环境说明](dev-environment/README.md)。根目录的启动入口保留，已安装工具、模型和运行数据继续使用原路径。
+| 位置 | 内容 |
+| --- | --- |
+| `pom.xml`、六个 `*-service/` | Java 服务与聚合构建配置 |
+| [rag-runtime/](rag-runtime/README.md) | Python 检索、编排、MCP 与评测 |
+| [frontend/](frontend/README.md) | Vue 前端 |
+| [database/](database/README.md) | 数据库迁移、开发样例与检索索引定义 |
+| [deploy/](deploy/README.md)、[tests/](tests/README.md) | 业务部署与跨模块验证 |
+| [docs/](docs/项目目录与开发约定.md) | 项目目录约定、团队接入、接口与架构文档 |
 
-## 本机使用
+新队员先阅读[团队协作与接入](docs/团队协作与接入.md)，按本人账号接受仓库邀请、克隆项目并准备各自的开发环境。详细模块职责见[项目目录与开发约定](docs/项目目录与开发约定.md)。
 
-- 双击 `启动Docker.cmd`，或桌面的 **Docker Desktop**，打开使用正确 D 盘配置的 Docker 界面。
-- GitHub Desktop 使用桌面图标或 `启动GitHub.cmd` 打开，入口会自动沿用本机 Windows 代理。若网页登录已授权却未返回应用，保持该网页打开后运行 `完成GitHub登录.cmd`。
-- 负责人日常可双击 `启动负责人环境.cmd`，一次启动七项基础服务与 Ollama API。
-- 双击 `启动基础服务.cmd` 启动五项基础服务；完整消息环境在开发终端运行 `./dev-environment/Start-Services.ps1 -Messaging`。
-- 双击 `启动开发终端.cmd`，使用本项目的 Java 17、Python 3.11 虚拟环境、Maven、Node.js 和模型配置。
-- 双击 `检查开发环境.cmd` 检查工具。服务的实际认证和健康检查使用 `./dev-environment/Test-Services.ps1 -Messaging`。
-- 用 VS Code 打开 `校园RAG开发环境.code-workspace`。
+## 环境配置入口
 
-详细端口、数据位置和日常操作见 [环境说明](dev-environment/README.md)。MySQL 开发实例使用 **13306**，保留本机已有的 3306 实例。
+环境脚本、开发中间件 Compose、依赖锁文件、本机启动入口、VS Code 工作区和原始安装手册统一放在 **[environment/](environment/README.md)**。负责人日常启动使用其中的 `启动负责人环境.cmd`，开发使用 `启动开发终端.cmd` 或 `校园RAG开发环境.code-workspace`；完整说明见[本机开发环境说明](environment/README.md)。
 
-## 负责人配置
+根目录 `.local/`、`.venv/`、`.setup/` 是独立的本机运行区，保存已有工具、模型、服务数据、虚拟环境与检查记录，继续使用原路径并由 Git 排除。环境凭据位于 `environment/.env`、`environment/.env.application`，也不提交仓库。文件分类见[文件夹说明](docs/文件夹说明.md)。
 
-基础服务凭据位于 `dev-environment/.env`。运行 `./dev-environment/Initialize-ApplicationEnvironment.ps1`，可生成仅本机用户可访问的 `dev-environment/.env.application`，包含实际连接参数和独立随机 APP/JWT 密钥。再次执行会保留原值。
-
-变量名应在接入真实代码时对应到项目实际配置；尚未编写的网关、检索和文档服务没有可验证的业务地址。团队成员应在各自机器生成开发凭据。
-
-## 模型与依赖
-
-- 手册指定的 `BAAI/bge-large-zh-v1.5` 实际为 **1024 维**，后续 Elasticsearch `dense_vector.dims` 应保持一致。[官方模型卡](https://huggingface.co/BAAI/bge-large-zh-v1.5)
-- 中文重排模型使用 `BAAI/bge-reranker-base`，本地生成模型使用 Ollama `qwen3:1.7b`；模型验证入口为 `dev-environment/Test-Models.ps1`。
-- Python 开发依赖与安装入口位于 `dev-environment/requirements-rag.in`、`Install-PythonDependencies.ps1`，以实际安装生成的锁文件复现版本。
-- 模型、缓存和虚拟环境均存储在本机 D 盘。2026-10-23 已完成嵌入、重排、中文生成的实际推理验证；生成后模型会释放内存。
-
-## 仓库内容
-
-可提交各业务模块代码、Maven 配置、数据库变更、开发脚本、Compose、依赖清单、说明和原始手册。`.env`、`.env.application`、模型权重、Docker 数据、安装包、日志、`node_modules` 和虚拟环境已排除。
-
-手册中的源码仓库地址是占位符。实际仓库与目录骨架已建立；各模块完成工程初始化和业务实现后，才能执行手册中的业务构建、启动、问答、引用、权限和评测验收。
+手册中的仓库占位符和环境版本差异，以本仓库文档为准。各模块完成工程初始化和业务实现后，再执行业务构建、启动、问答、引用、权限和评测验收。

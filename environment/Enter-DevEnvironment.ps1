@@ -62,6 +62,6 @@ if (-not $Quiet) {
     Write-Host ('Python: ' + (Get-Command python -ErrorAction SilentlyContinue).Source)
     Write-Host ('JAVA_HOME: ' + $env:JAVA_HOME)
     Write-Host ('Workspace: ' + $workspaceRoot)
-    Write-Host 'Run .\dev-environment\Check-Environment.ps1 to check installed tools.'
+    Write-Host 'Run .\environment\Check-Environment.ps1 to check installed tools.'
     Set-Location -LiteralPath $workspaceRoot
 }

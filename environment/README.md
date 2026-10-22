@@ -1,32 +1,51 @@
 # 本机开发环境说明
 
-配置日期：2026-10-22，补充验收：2026-10-23。按[《校园级RAG知识库平台环境安装与首次运行手册》](../docs/参考资料/校园级RAG知识库平台环境安装与首次运行手册.pdf)准备，按项目负责人角色配置开发工具、完整基础服务、Python AI 依赖和本地模型。团队私有仓库已创建：[campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform)，已建立[项目目录骨架](../docs/项目目录与开发约定.md)，业务功能仍待实现。队员接入请先看[团队协作与接入](../docs/团队协作与接入.md)，目录整理见[文件夹说明](../docs/文件夹说明.md)。
+配置日期：2026-10-22，补充验收与目录整理：2026-10-23。按[《校园级RAG知识库平台环境安装与首次运行手册》](docs/校园级RAG知识库平台环境安装与首次运行手册.pdf)准备，按项目负责人角色配置开发工具、完整基础服务、Python AI 依赖和本地模型。团队私有仓库已创建：[campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform)，已建立[项目目录骨架](../docs/项目目录与开发约定.md)，业务功能仍待实现。队员接入请先看[团队协作与接入](../docs/团队协作与接入.md)，目录整理见[文件夹说明](../docs/文件夹说明.md)。
 
-下文 `.local`、`.venv`、`.setup` 均相对于 `D:\campus_RAG_work`；凭据文件的完整位置为 `D:\campus_RAG_work\dev-environment\.env`。
+下文 `.local`、`.venv`、`.setup` 均相对于 `D:\campus_RAG_work`；凭据文件的完整位置为 `D:\campus_RAG_work\environment\.env`。
+
+## 本目录内容与项目边界
+
+本目录集中维护开发环境；Java、Python、前端业务源码以及数据库迁移、业务部署、业务测试和团队文档保留在仓库根目录各自的项目目录中。
+
+| 内容 | 位置 |
+| --- | --- |
+| 日常启动与检查入口 | 本目录的 `启动*.cmd`、`停止基础服务.cmd`、`检查开发环境.cmd`、`完成GitHub登录.cmd` |
+| VS Code 工作区 | [校园RAG开发环境.code-workspace](校园RAG开发环境.code-workspace)，打开仓库根目录 |
+| 环境初始化、服务、模型与检查脚本 | 本目录的 `.ps1`、`.py` 与 `Start-DevTerminal.cmd` |
+| 开发中间件与附属配置 | [docker-compose.yml](docker-compose.yml)、`elasticsearch/`、`rocketmq/` |
+| Python SDK 与模型依赖 | `requirements-*.in`、`requirements-*.lock.txt` |
+| 无密钥模型参数 | [model-env.example](model-env.example) |
+| 原始手册与版本来源 | [docs/](docs/校园级RAG知识库平台环境安装与首次运行手册.pdf)、[SOURCES.md](SOURCES.md) |
+| 本机凭据（Git 排除） | `.env`、`.env.application` |
+
+已安装工具、模型、虚拟环境和运行状态保留在仓库根目录的 `.local/`、`.venv/`、`.setup/` 独立本机运行区。本次只集中环境配置与入口，不迁移这些已有运行数据；启动脚本通过仓库根目录定位它们。
 
 Docker 已于 2026-10-22 23:43（北京时间）完成修复和真实重启验收：原来的七项服务全部健康，九个持久化卷、原容器和凭据均保留；MinIO 登录、IK 中文分词、Nacos 随机密码和 RocketMQ 实际注册全部通过。普通终端和 Docker 图形界面均可使用。
 
+2026-10-23 环境目录整合后，已使用 `environment/Start-Services.ps1 -Messaging` 验证新入口，并刷新开发容器的 Compose 管理记录，使其统一指向 `environment/docker-compose.yml`。七项服务健康、九个数据卷一致，RocketMQ Broker 已使用迁移后的配置；凭据内容与文件权限、Docker 登录、Ollama 及本机运行区均保留，六个外部快捷方式已备份并更新。整合检查记录位于 `.setup/logs/environment-layout-check.json`。
+
 ## 日常使用
 
-负责人可直接双击上一级目录的 `启动负责人环境.cmd`，启动七项完整基础服务和 Ollama API。打开图形界面使用桌面或开始菜单的 **Docker Desktop**，也可以双击上一级的 `启动Docker.cmd`。
+负责人可直接双击本目录的 `启动负责人环境.cmd`，启动七项完整基础服务和 Ollama API。打开图形界面使用桌面或开始菜单的 **Docker Desktop**，也可以双击本目录的 `启动Docker.cmd`。下列 PowerShell 命令均从仓库根目录 `D:\campus_RAG_work` 执行。
 
-1. 双击上一级目录的 `启动开发终端.cmd`，进入已配置的开发终端。
+1. 双击本目录的 `启动开发终端.cmd`，进入已配置的开发终端。
 2. 双击 `启动基础服务.cmd` 启动 MySQL、Redis、Elasticsearch、MinIO、Nacos。
 3. 需要消息队列时，在开发终端运行：
 
 ```powershell
-.\dev-environment\Start-Services.ps1 -Messaging
+.\environment\Start-Services.ps1 -Messaging
 ```
 
 4. 双击 `检查开发环境.cmd` 查看工具版本和端口；进一步检查服务健康、认证及中文分词：
 
 ```powershell
-.\dev-environment\Test-Services.ps1 -Messaging
+.\environment\Test-Services.ps1 -Messaging
 ```
 
 5. 用完后双击 `停止基础服务.cmd`，停止并移除这套环境的容器，保留数据卷和凭据。后续再次启动即可使用。
 
-VS Code 可以打开上一级目录的 `校园RAG开发环境.code-workspace`；该工作区已指定 Python 3.11 虚拟环境、Java 17、Maven 和专用开发终端。现有 Java、Python、Pylance、Vue 扩展均已检查存在。
+VS Code 可以打开本目录的 `校园RAG开发环境.code-workspace`；该工作区以仓库根目录为开发目录，已指定 Python 3.11 虚拟环境、Java 17、Maven 和专用开发终端。现有 Java、Python、Pylance、Vue 扩展均已检查存在。
 
 ## 开发工具
 
@@ -54,9 +73,9 @@ VS Code 可以打开上一级目录的 `校园RAG开发环境.code-workspace`；
 
 GitHub Desktop 已独立登录 `ZhiShan717`，已验证普通入口重新打开后保留登录状态，并成功访问私有仓库。已将本机配置完成的原目录 `D:\campus_RAG_work` 加入应用；另行克隆的目录保留。
 
-桌面、开始菜单和 `D:\github` 的 **GitHub Desktop** 快捷方式统一使用 `Open-GitHubDesktop.ps1`；也可双击上一级的 `启动GitHub.cmd`。该入口每次读取 Windows 当前启用的代理，只传给应用及其 Git 子进程，同时配置 Electron 的代理参数。它保留 HTTPS 证书验证，不修改全局 Git 或系统网络设置。
+桌面、开始菜单和 `D:\github` 的 **GitHub Desktop** 快捷方式统一使用本目录 `Open-GitHubDesktop.ps1`；也可双击本目录的 `启动GitHub.cmd`。该入口每次读取 Windows 当前启用的代理，只传给应用及其 Git 子进程，同时配置 Electron 的代理参数。它保留 HTTPS 证书验证，不修改全局 Git 或系统网络设置。
 
-若 GitHub 官方网页已经显示 **OAuth application authorized**，但未返回应用：保持该授权完成页打开，双击上一级的 `完成GitHub登录.cmd`。辅助入口只将 Microsoft Edge 上 GitHub 官方完成页中的回调交给本机已注册的 D 盘应用，不保存或输出一次性授权参数，不代替账号登录或授权。
+若 GitHub 官方网页已经显示 **OAuth application authorized**，但未返回应用：保持该授权完成页打开，双击本目录的 `完成GitHub登录.cmd`。辅助入口只将 Microsoft Edge 上 GitHub 官方完成页中的回调交给本机已注册的 D 盘应用，不保存或输出一次性授权参数，不代替账号登录或授权。
 
 原快捷方式备份、登录与同步记录位于 `.setup\state` 和 `.setup\logs\github-desktop-login-check.log`。日常开发使用原项目目录，其中已有虚拟环境、模型和服务数据。
 
@@ -80,6 +99,8 @@ GitHub Desktop 已独立登录 `ZhiShan717`，已验证普通入口重新打开�
 
 本目录 `.env.application` 另行汇总实际连接信息、模型路径，以及独立随机生成的 APP/JWT 密钥，同样限制文件权限且已排除 Git。由 `Initialize-ApplicationEnvironment.ps1` 生成，重复运行保留原值。接入业务代码时需将变量名对应到实际配置；尚未实现的 Java 网关/文档/检索服务地址，需要按真实代码填写。
 
+需要生成应用参数时，从仓库根目录运行 `./environment/Initialize-ApplicationEnvironment.ps1`。SDK 安装入口为 `Install-PythonDependencies.ps1`，依赖依据为 `requirements-rag.in` 与实际安装生成的锁文件；模型安装与验收入口见下文。
+
 本机已有 `MySQL80` 服务使用 3306，因此本次独立开发实例使用 13306。原有数据库服务未修改。后续项目在 Windows 上运行时应将这套开发数据库连接端口设为 13306；若业务服务运行在同一 Compose 网络内，则仍使用容器端口 3306。
 
 本机 Navicat Premium Lite 17 已添加并验证连接 **校园RAG开发库**，使用 `127.0.0.1:13306`、`campus_dev` 账号，密码由 Navicat 自身保存。打开该连接下的 `campus_rag` 数据库即可使用；原有 `MySQL8.0` 连接保留。验收记录位于 `.setup\logs\navicat-connection-check.log`。
@@ -89,7 +110,7 @@ GitHub Desktop 已独立登录 `ZhiShan717`，已验证普通入口重新打开�
 本机加密的漫游用户目录无法完成 Docker 所需的原子文件重命名，已为 Docker 单独设置 D 盘配置目录。应使用 `Start-Services.ps1` 或以下脚本启动引擎：
 
 ```powershell
-.\dev-environment\Start-ContainerEngine.ps1
+.\environment\Start-ContainerEngine.ps1
 ```
 
 引擎首次启动可能需要几十秒。基础服务启动脚本会自动等待就绪。
@@ -104,8 +125,8 @@ GitHub Desktop 已独立登录 `ZhiShan717`，已验证普通入口重新打开�
 Ollama 后台服务可按需启动、停止：
 
 ```powershell
-.\dev-environment\Start-ModelService.ps1
-.\dev-environment\Stop-ModelService.ps1
+.\environment\Start-ModelService.ps1
+.\environment\Stop-ModelService.ps1
 ```
 
 该电脑为约 16GB 内存、Intel 集成显卡，使用 CPU 模型推理。本地中文嵌入模型为 `BAAI/bge-large-zh-v1.5`，重排模型为 `BAAI/bge-reranker-base`，缓存位于 `.local\models`；下载脚本固定官方模型提交并核验权重 SHA256。Ollama 生成模型选择 `qwen3:1.7b`，模型存于 `.local\ollama-models`。实际下载、加载和生成是否通过，以 `Test-Models.ps1` 及 `.setup\logs` 中的现场验收结果为准。
@@ -135,6 +156,7 @@ CPU 模型依赖为 PyTorch 2.14.1+cpu、Sentence Transformers 6.2.0、Transform
 - RocketMQ 首次启动会运行一次数据卷目录权限初始化，随后以镜像原有的非 root 用户运行 NameServer 和 Broker。
 - `.setup\logs\ollama-stdout.log`、`ollama-stderr.log`：由开发脚本管理的模型服务日志。
 - 安装包、下载缓存与排障截图在 2026-10-23 整理时清理；保留已安装工具、模型、服务数据和关键检查记录。重新安装模型依赖时，脚本会重新下载并校验所需文件。
+- 早期检查记录中的 `dev-environment/` 与根目录启动入口是当时的路径；当前统一使用 `environment/`。历史日志保持原样，复查时按本说明定位现有文件。
 - 根目录及本目录的 `.gitignore` 已排除凭据、模型、虚拟环境、安装包和运行数据。
 
 基础服务总内存上限约 3.5GiB；消息组件额外约 1.4GiB，上限不等于实际占用。无需常驻时使用停止入口释放资源；停止不会删除命名数据卷。

@@ -65,7 +65,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'pip check found dependency conflicts.' }
     Add-CampusCheck 'pip consistency' 'PASS' 'No broken requirements found.'
 } catch {
-    Add-CampusCheck 'Python SDKs' 'FAIL' 'Run dev-environment\Install-PythonDependencies.ps1, then Test-PythonDependencies.py for details.'
+    Add-CampusCheck 'Python SDKs' 'FAIL' 'Run environment\Install-PythonDependencies.ps1, then Test-PythonDependencies.py for details.'
 }
 if (Get-Command code.cmd -ErrorAction SilentlyContinue) {
     Add-CampusCheck 'VS Code' 'PASS' (Get-Command code.cmd).Source
