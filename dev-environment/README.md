@@ -1,6 +1,6 @@
 # 本机开发环境说明
 
-配置日期：2026-10-22，补充验收：2026-10-23。按[《校园级RAG知识库平台环境安装与首次运行手册》](../docs/参考资料/校园级RAG知识库平台环境安装与首次运行手册.pdf)准备，按项目负责人角色配置开发工具、完整基础服务、Python AI 依赖和本地模型。团队私有仓库已创建：[campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform)，尚无业务应用源码。队员接入请先看[团队协作与接入](../docs/团队协作与接入.md)，目录整理见[文件夹说明](../docs/文件夹说明.md)。
+配置日期：2026-10-22，补充验收：2026-10-23。按[《校园级RAG知识库平台环境安装与首次运行手册》](../docs/参考资料/校园级RAG知识库平台环境安装与首次运行手册.pdf)准备，按项目负责人角色配置开发工具、完整基础服务、Python AI 依赖和本地模型。团队私有仓库已创建：[campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform)，已建立[项目目录骨架](../docs/项目目录与开发约定.md)，业务功能仍待实现。队员接入请先看[团队协作与接入](../docs/团队协作与接入.md)，目录整理见[文件夹说明](../docs/文件夹说明.md)。
 
 下文 `.local`、`.venv`、`.setup` 均相对于 `D:\campus_RAG_work`；凭据文件的完整位置为 `D:\campus_RAG_work\dev-environment\.env`。
 
