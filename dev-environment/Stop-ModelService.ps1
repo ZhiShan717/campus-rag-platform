@@ -15,8 +15,15 @@ if (-not $process) {
     Write-Host 'The recorded Ollama process is no longer running.'
     return
 }
-$actualStartTime = $process.StartTime.ToUniversalTime().ToString('o')
-if ($process.ProcessName -ne 'ollama' -or $actualStartTime -ne $record.StartTimeUtc -or $process.Path -ne $record.Executable) {
+$actualStartTimeUtc = $process.StartTime.ToUniversalTime()
+# PowerShell 7 parses JSON ISO timestamps as DateTime; Windows PowerShell 5.1
+# leaves them as strings. Compare exact UTC ticks in both cases.
+$recordedStartTimeUtc = if ($record.StartTimeUtc -is [DateTime]) {
+    $record.StartTimeUtc.ToUniversalTime()
+} else {
+    [DateTime]::Parse([string]$record.StartTimeUtc, [Globalization.CultureInfo]::InvariantCulture, [Globalization.DateTimeStyles]::RoundtripKind).ToUniversalTime()
+}
+if ($process.ProcessName -ne 'ollama' -or $actualStartTimeUtc.Ticks -ne $recordedStartTimeUtc.Ticks -or $process.Path -ne $record.Executable) {
     throw 'The recorded process identity no longer matches. No process was stopped.'
 }
 Stop-Process -Id $process.Id -ErrorAction Stop
