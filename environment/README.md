@@ -1,6 +1,6 @@
 # 本机开发环境说明
 
-配置日期：2026-10-22，补充验收与目录整理：2026-10-23。按[《校园级RAG知识库平台环境安装与首次运行手册》](docs/校园级RAG知识库平台环境安装与首次运行手册.pdf)准备，按项目负责人角色配置开发工具、完整基础服务、Python AI 依赖和本地模型。团队私有仓库已创建：[campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform)，已建立[项目目录骨架](../docs/项目目录与开发约定.md)，业务功能仍待实现。队员接入请先看[团队协作与接入](../docs/团队协作与接入.md)，目录整理见[文件夹说明](../docs/文件夹说明.md)。
+配置日期：2026-10-22，补充验收与目录整理：2026-10-23。按[《校园级RAG知识库平台环境安装与首次运行手册》](docs/校园级RAG知识库平台环境安装与首次运行手册.pdf)准备，按项目负责人角色配置开发工具、完整基础服务、Python AI 依赖和本地模型。团队仓库 [campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform) 为公开仓库，可匿名浏览与 HTTPS 克隆；推送需本人账号及相应写入权限。已建立[项目目录骨架](../docs/项目目录与开发约定.md)，业务功能仍待实现。队员接入与 Fork 协作请先看[团队协作与接入](../docs/团队协作与接入.md)，目录整理见[文件夹说明](../docs/文件夹说明.md)。
 
 下文 `.local`、`.venv`、`.setup` 均相对于 `D:\campus_RAG_work`；凭据文件的完整位置为 `D:\campus_RAG_work\environment\.env`。
 
@@ -59,7 +59,7 @@ VS Code 可以打开本目录的 `校园RAG开发环境.code-workspace`；该工
 | Node.js / npm | 24.22.0 / 11.19.1 | 使用现有安装；npm 官方源连通性通过 |
 | Git | 2.55.0.windows.3 | 使用现有安装与已有姓名、邮箱 |
 | GitHub Desktop | 3.6.7 | `D:\github\GitHubDesktop`；已登录 ZhiShan717 |
-| GitHub CLI | 2.103.0 | `.local\GitHubCLI`；已授权团队私有仓库 |
+| GitHub CLI | 2.103.0 | `.local\GitHubCLI`；负责人本人账号已授权 |
 | VS Code | 1.142.0 | 使用现有安装 |
 | Docker Desktop | 4.96.2 | `.local\DockerDesktop`，当前用户安装，WSL2 后端 |
 | Docker Engine / Compose | 29.9.2 / 5.6.1 | Linux 容器；使用 `docker compose` 命令 |
@@ -71,7 +71,7 @@ VS Code 可以打开本目录的 `校园RAG开发环境.code-workspace`；该工
 
 ## GitHub Desktop 登录与使用
 
-GitHub Desktop 已独立登录 `ZhiShan717`，已验证普通入口重新打开后保留登录状态，并成功访问私有仓库。已将本机配置完成的原目录 `D:\campus_RAG_work` 加入应用；另行克隆的目录保留。
+GitHub Desktop 已独立登录 `ZhiShan717`，已验证普通入口重新打开后保留登录状态和仓库同步。已将本机配置完成的原目录 `D:\campus_RAG_work` 加入应用；另行克隆的目录保留。以下登录与路径记录仅针对负责人本机；队员读取公开仓库无需登录，推送和创建 Pull Request 时应使用本人账号。
 
 桌面、开始菜单和 `D:\github` 的 **GitHub Desktop** 快捷方式统一使用本目录 `Open-GitHubDesktop.ps1`；也可双击本目录的 `启动GitHub.cmd`。该入口每次读取 Windows 当前启用的代理，只传给应用及其 Git 子进程，同时配置 Electron 的代理参数。它保留 HTTPS 证书验证，不修改全局 Git 或系统网络设置。
 

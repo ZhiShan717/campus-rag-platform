@@ -1,6 +1,6 @@
 # 校园 RAG 知识库平台
 
-团队私有仓库：[ZhiShan717/campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform)，默认分支 `main`。
+团队公开仓库：[ZhiShan717/campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform)，默认分支 `main`。任何人都可浏览和通过 HTTPS 克隆；向原仓库推送仍需写入权限。
 
 本仓库集中管理 Java 平台、Python RAG 运行时和 Vue 前端。六个 Java 模块已接入 Java 17 聚合 POM，Python、前端、数据库、部署和测试目录已建立；当前为工程目录骨架，业务功能和可运行的业务应用仍待实现。
 
@@ -15,7 +15,7 @@
 | [deploy/](deploy/README.md)、[tests/](tests/README.md) | 业务部署与跨模块验证 |
 | [docs/](docs/项目目录与开发约定.md) | 项目目录约定、团队接入、接口与架构文档 |
 
-新队员先阅读[团队协作与接入](docs/团队协作与接入.md)，按本人账号接受仓库邀请、克隆项目并准备各自的开发环境。详细模块职责见[项目目录与开发约定](docs/项目目录与开发约定.md)。
+新队员先阅读[团队协作与接入](docs/团队协作与接入.md)，克隆项目并准备各自的开发环境。有写入权限的队员通过任务分支提交 Pull Request；没有写入权限时，通过个人 Fork 提交 Pull Request。详细模块职责见[项目目录与开发约定](docs/项目目录与开发约定.md)。
 
 ## 环境配置入口
 
