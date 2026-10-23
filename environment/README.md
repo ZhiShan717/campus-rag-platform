@@ -1,223 +1,120 @@
-# 本机开发环境说明
+# 项目开发环境
 
-配置日期：2026-10-22，补充验收与目录整理：2026-10-23。按[《校园级RAG知识库平台环境安装与首次运行手册》](docs/校园级RAG知识库平台环境安装与首次运行手册.pdf)准备，按项目负责人角色配置开发工具、完整基础服务、Python AI 依赖和本地模型。团队仓库 [campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform) 为公开仓库，可匿名浏览与 HTTPS 克隆；推送需本人账号及相应写入权限。已建立[项目目录骨架](../docs/development/项目目录与开发约定.md)，业务功能仍待实现。队员接入与 Fork 协作请先看[团队协作与接入](../docs/team/团队协作与接入.md)，其他文档见[文档导航](../docs/README.md)。
+本目录维护团队共享的开发中间件、Python 依赖、模型准备和环境检查工具。项目业务代码分别位于 `backend/`、`rag-runtime/` 和 `frontend/`；当前仍处于目录骨架阶段，启动基础服务不代表业务平台已经可用。队员先阅读[团队协作与接入](../docs/team/团队协作与接入.md)，完整目录见[项目目录与开发约定](../docs/development/项目目录与开发约定.md)。
 
-下文 `.local`、`.venv`、`.setup` 均相对于 `D:\campus_RAG_work`；凭据文件的完整位置为 `D:\campus_RAG_work\environment\.env`。
+## 使用前确认
 
-## 按任务查找入口
+- 当前脚本面向 Windows PowerShell，Docker Desktop 使用 WSL2 后端和 Linux 容器。凭据初始化使用 Windows 文件权限，CPU 模型安装固定 Python 3.11、Windows x64 的 PyTorch 包；其他系统需另行适配。
+- 先安装 Java 17、Maven 3.9、Python 3.11、Git、Docker Desktop；Node.js 按后续前端依赖要求配置，需要本地生成模型时安装 Ollama。工具本身不随仓库分发。
+- [Enter-DevEnvironment.ps1](Enter-DevEnvironment.ps1) 含已有机器的 Java、Maven 等工具路径；[Start-ContainerEngine.ps1](Start-ContainerEngine.ps1)、[Initialize-ContainerClient.ps1](Initialize-ContainerClient.ps1) 与 [Common.ps1](Common.ps1) 使用工作区独立 Docker 配置和 `desktop-linux` 上下文。队员需按自己的安装位置、Docker 上下文及数据目录核对和适配后再执行；这些入口目前不保证跨机器直接运行。
+- `Start-ContainerEngine.ps1` 会使用 `.local/docker-profile/` 的独立配置，并设置该配置的数据目录。已有 Docker 环境应先核对数据盘和配置，避免切换到其他数据目录后误以为原容器丢失。
+- 下列命令从仓库根目录执行。个人登录辅助、负责人启动入口和编辑器工作区配置只在本机保留，不随 Git 分发。
 
-| 要做的事 | 入口或说明 |
-| --- | --- |
-| 每天启动负责人环境 | 双击 [启动负责人环境.cmd](启动负责人环境.cmd)，启动完整基础服务和 Ollama |
-| 打开开发终端 | 双击 [启动开发终端.cmd](启动开发终端.cmd) |
-| 检查开发环境 | 双击 [检查开发环境.cmd](检查开发环境.cmd)；服务认证检查见 [日常使用](#日常使用) |
-| 结束工作、停止服务 | 双击 [停止基础服务.cmd](停止基础服务.cmd)；停止 Ollama 使用 [Stop-ModelService.ps1](Stop-ModelService.ps1) |
-| 首次安装 Python 依赖 | [Install-PythonDependencies.ps1](Install-PythonDependencies.ps1)，说明见 [开发工具](#开发工具) |
-| 准备或验证本地模型 | [Prepare-Models.ps1](Prepare-Models.ps1)、[Test-Models.ps1](Test-Models.ps1)，说明见 [Docker 与模型服务](#docker-与模型服务) |
-| GitHub 登录回调或 Docker 启动排障 | [GitHub Desktop 登录与使用](#github-desktop-登录与使用)、[Docker 与模型服务](#docker-与模型服务) |
+## 首次准备与日常操作
 
-## 本目录内容与项目边界
+完成上述路径适配后，在 Python 3.11 终端创建项目虚拟环境并安装 SDK：
 
-本目录集中维护开发环境；Java 服务集中在根目录 `backend/` 下，Python、前端、数据库、部署、测试与团队资料分别在 `rag-runtime/`、`frontend/`、`database/`、`deploy/`、`tests/`、`docs/` 维护，文件归属见[目录与开发约定](../docs/development/项目目录与开发约定.md)。
+```powershell
+python -m venv .venv
+.\environment\Install-PythonDependencies.ps1
+```
 
-| 内容 | 位置 |
-| --- | --- |
-| 日常启动与检查入口 | 本目录的 `启动*.cmd`、`停止基础服务.cmd`、`检查开发环境.cmd`、`完成GitHub登录.cmd` |
-| VS Code 工作区 | [校园RAG开发环境.code-workspace](校园RAG开发环境.code-workspace)，打开仓库根目录 |
-| 环境初始化、服务、模型与检查脚本 | 本目录的 `.ps1`、`.py` 与 `Start-DevTerminal.cmd` |
-| 开发中间件与附属配置 | [docker-compose.yml](docker-compose.yml)、`elasticsearch/`、`rocketmq/` |
-| Python SDK 与模型依赖 | `requirements-*.in`、`requirements-*.lock.txt` |
-| 无密钥模型参数 | [model-env.example](model-env.example) |
-| 原始手册与版本来源 | [docs/](docs/校园级RAG知识库平台环境安装与首次运行手册.pdf)、[SOURCES.md](SOURCES.md) |
-| 本机凭据（Git 排除） | `.env`、`.env.application` |
+初始化本机凭据，再启动五项基础服务：
 
-已安装工具、模型、虚拟环境和运行状态保留在仓库根目录的 `.local/`、`.venv/`、`.setup/` 独立本机运行区。本次只集中环境配置与入口，不迁移这些已有运行数据；启动脚本通过仓库根目录定位它们。
+```powershell
+.\environment\Initialize-Environment.ps1
+.\environment\Start-Services.ps1
+```
 
-Docker 已于 2026-10-22 23:43（北京时间）完成修复和真实重启验收：原来的七项服务全部健康，九个持久化卷、原容器和凭据均保留；MinIO 登录、IK 中文分词、Nacos 随机密码和 RocketMQ 实际注册全部通过。普通终端和 Docker 图形界面均可使用。
-
-2026-10-23 环境目录整合后，已使用 `environment/Start-Services.ps1 -Messaging` 验证新入口，并刷新开发容器的 Compose 管理记录，使其统一指向 `environment/docker-compose.yml`。七项服务健康、九个数据卷一致，RocketMQ Broker 已使用迁移后的配置；凭据内容与文件权限、Docker 登录、Ollama 及本机运行区均保留，六个外部快捷方式已备份并更新。整合检查记录位于 `.setup/logs/environment-layout-check.json`。
-
-## 环境文件索引
-
-### 双击入口与对应脚本
-
-| 双击入口 | 对应脚本与用途 |
-| --- | --- |
-| [启动负责人环境.cmd](启动负责人环境.cmd) | [Start-OwnerEnvironment.ps1](Start-OwnerEnvironment.ps1)：启动含 RocketMQ 的基础服务与 Ollama |
-| [启动基础服务.cmd](启动基础服务.cmd) | [Start-Services.ps1](Start-Services.ps1)：启动基础服务；可传入 `-Messaging` 启用 RocketMQ |
-| [停止基础服务.cmd](停止基础服务.cmd) | [Stop-Services.ps1](Stop-Services.ps1)：停止并移除环境容器，保留数据卷和凭据 |
-| [启动开发终端.cmd](启动开发终端.cmd) | [Start-DevTerminal.cmd](Start-DevTerminal.cmd) → [Enter-DevEnvironment.ps1](Enter-DevEnvironment.ps1)：在仓库根目录打开已配置工具和模型路径的终端 |
-| [检查开发环境.cmd](检查开发环境.cmd) | [Check-Environment.ps1](Check-Environment.ps1)：检查工具、SDK、模型 API 与端口；服务认证另用 `Test-Services.ps1` |
-| [启动Docker.cmd](启动Docker.cmd) | [Open-DockerDesktop.ps1](Open-DockerDesktop.ps1)：启动并等待引擎，使用同一本机配置打开图形界面 |
-| [启动GitHub.cmd](启动GitHub.cmd) | [Open-GitHubDesktop.ps1](Open-GitHubDesktop.ps1)：按 Windows 当前代理设置打开 GitHub Desktop |
-| [完成GitHub登录.cmd](完成GitHub登录.cmd) | [Complete-GitHubDesktopSignIn.ps1](Complete-GitHubDesktopSignIn.ps1)：本人完成官方网页授权后，辅助将 Edge 中的回调交给本机应用 |
-
-### 初始化、服务与依赖管理
-
-| 文件 | 用途 |
-| --- | --- |
-| [Initialize-Environment.ps1](Initialize-Environment.ps1)、[Initialize-ApplicationEnvironment.ps1](Initialize-ApplicationEnvironment.ps1) | 分别生成基础服务凭据与应用连接参数；已有值保留，不轮换密钥 |
-| [Initialize-ContainerClient.ps1](Initialize-ContainerClient.ps1)、[Start-ContainerEngine.ps1](Start-ContainerEngine.ps1) | 配置独立 Docker 客户端插件路径，并通过本机独立配置启动引擎 |
-| [Common.ps1](Common.ps1) | 供服务脚本加载的 Compose 参数、凭据读取、引擎等待与 Nacos 认证辅助函数 |
-| [Test-Services.ps1](Test-Services.ps1) | 验证容器健康、认证及中文分词；`-Messaging` 另检查消息组件 |
-| [Install-PythonDependencies.ps1](Install-PythonDependencies.ps1)、[Test-PythonDependencies.py](Test-PythonDependencies.py) | 安装 SDK 依赖并检查兼容性、离线 SDK 调用；不启动业务应用 |
-| [Install-ModelDependencies.ps1](Install-ModelDependencies.ps1) | 安装 CPU 模型推理依赖，并使用 SDK 锁文件约束兼容性 |
-| [Prepare-Models.ps1](Prepare-Models.ps1)、[Test-Models.ps1](Test-Models.ps1) | 前者依次安装依赖、下载模型并验收；后者只验收已有模型，必要时启动 Ollama |
-| [Start-ModelService.ps1](Start-ModelService.ps1)、[Stop-ModelService.ps1](Stop-ModelService.ps1) | 启动本地 Ollama；停止脚本仅停止本环境记录且身份核验一致的进程 |
-
-模型脚本使用以下 Python 助手；它们处理环境准备和验收，不是 `rag-runtime/` 的业务入口：
-
-| 内部助手 | 用途 |
-| --- | --- |
-| [model-download.py](model-download.py) | 从固定 Hugging Face 提交下载 BAAI 模型，并核验权重 |
-| [model-download-wheels.py](model-download-wheels.py) | 从官方 PyPI 下载模型所需的大型依赖包并校验 SHA256，供模型依赖安装脚本调用 |
-| [model-pull-ollama.py](model-pull-ollama.py) | 通过本地 Ollama API 拉取 Qwen，并核对固定 digest |
-| [model-verify.py](model-verify.py) | 验证嵌入、重排和本地生成，将验收记录写入本机 `.setup/logs/` |
-
-### 配置与参考文件
-
-| 文件 | 用途 |
-| --- | --- |
-| [docker-compose.yml](docker-compose.yml) | 开发中间件、健康检查、持久化卷与可选消息组件 |
-| [elasticsearch/Dockerfile](elasticsearch/Dockerfile)、[rocketmq/broker.conf](rocketmq/broker.conf) | 分别安装与 ES 匹配的 IK 插件、配置面向本机客户端的开发 Broker |
-| [requirements-rag.in](requirements-rag.in)、[requirements-rag.lock.txt](requirements-rag.lock.txt) | SDK 依赖声明与固定安装版本；日常安装优先使用锁文件 |
-| [requirements-models.in](requirements-models.in)、[requirements-models.lock.txt](requirements-models.lock.txt) | CPU 模型依赖声明与锁文件；安装时同时遵守 SDK 锁约束 |
-| [model-env.example](model-env.example)、[校园RAG开发环境.code-workspace](校园RAG开发环境.code-workspace) | 无密钥模型参数参考与负责人本机 VS Code 工具路径配置 |
-| [SOURCES.md](SOURCES.md)、[原始手册 PDF](docs/校园级RAG知识库平台环境安装与首次运行手册.pdf) | 镜像与版本来源、最初安装参考；现行操作以仓库说明为准 |
-| [.gitignore](.gitignore) | 排除本目录的本机 `.env`、`.env.application`、日志和临时文件；这两份凭据不在公开仓库中分发 |
-
-## 日常使用
-
-负责人可直接双击本目录的 `启动负责人环境.cmd`，启动七项完整基础服务和 Ollama API。打开图形界面使用桌面或开始菜单的 **Docker Desktop**，也可以双击本目录的 `启动Docker.cmd`。下列 PowerShell 命令均从仓库根目录 `D:\campus_RAG_work` 执行。
-
-1. 双击本目录的 `启动开发终端.cmd`，进入已配置的开发终端。
-2. 双击 `启动基础服务.cmd` 启动 MySQL、Redis、Elasticsearch、MinIO、Nacos。
-3. 需要消息队列时，在开发终端运行：
+需要 RocketMQ 时，以带参数的启动入口启用消息组件：
 
 ```powershell
 .\environment\Start-Services.ps1 -Messaging
 ```
 
-4. 双击 `检查开发环境.cmd` 查看工具版本和端口；进一步检查服务健康、认证及中文分词：
+检查工具、依赖与服务认证；未启用消息组件时，省略检查命令的 `-Messaging`：
 
 ```powershell
+.\environment\Check-Environment.ps1
 .\environment\Test-Services.ps1 -Messaging
 ```
 
-5. 用完后双击 `停止基础服务.cmd`，停止并移除这套环境的容器，保留数据卷和凭据。后续再次启动即可使用。
-
-VS Code 可以打开本目录的 `校园RAG开发环境.code-workspace`；该工作区以仓库根目录为开发目录，已指定 Python 3.11 虚拟环境、Java 17、Maven 和专用开发终端。现有 Java、Python、Pylance、Vue 扩展均已检查存在。
-
-## 开发工具
-
-| 工具 | 本次验证版本 | 位置或说明 |
-| --- | --- | --- |
-| Java / javac | Temurin 17.0.20.1 | `D:\JDK`，使用现有安装 |
-| Maven | 3.9.9 | 使用现有安装 |
-| Python | 3.11.9 | `.local\Python311`，官方 Windows 安装包 |
-| Python 虚拟环境 | Python 3.11 | `.venv` |
-| pip / uv | 26.2.2 / 0.13.5 | 安装于 `.venv` |
-| Node.js / npm | 24.22.0 / 11.19.1 | 使用现有安装；npm 官方源连通性通过 |
-| Git | 2.55.0.windows.3 | 使用现有安装与已有姓名、邮箱 |
-| GitHub Desktop | 3.6.7 | `D:\github\GitHubDesktop`；已登录 ZhiShan717 |
-| GitHub CLI | 2.103.0 | `.local\GitHubCLI`；负责人本人账号已授权 |
-| VS Code | 1.142.0 | 使用现有安装 |
-| Docker Desktop | 4.96.2 | `.local\DockerDesktop`，当前用户安装，WSL2 后端 |
-| Docker Engine / Compose | 29.9.2 / 5.6.1 | Linux 容器；使用 `docker compose` 命令 |
-| Ollama | 0.40.8 | `.local\Ollama` |
-
-开发终端仅在自身进程设置 PATH、JAVA_HOME、MAVEN_HOME、虚拟环境、模型路径和 Docker 客户端上下文；本机原有 Python 3.14 保留。Python AI 开发依赖已在 `.venv` 安装，版本见 `requirements-rag.lock.txt`；使用 `Install-PythonDependencies.ps1` 可复现安装，`Test-PythonDependencies.py` 验证实际 SDK 调用和依赖一致性。
-
-手册所列 LangChain/LangGraph 版本为下限。新环境采用当前相容的 LangChain 1.4.7、LangGraph 1.2.16、MCP 2.3.0 和 FastAPI 0.159.1，并锁定全部解析后的依赖。当前没有旧业务源码需要迁移；业务代码建立后应使用该代码自己的锁文件。
-
-## GitHub Desktop 登录与使用
-
-GitHub Desktop 已独立登录 `ZhiShan717`，已验证普通入口重新打开后保留登录状态和仓库同步。已将本机配置完成的原目录 `D:\campus_RAG_work` 加入应用；另行克隆的目录保留。以下登录与路径记录仅针对负责人本机；队员读取公开仓库无需登录，推送和创建 Pull Request 时应使用本人账号。
-
-桌面、开始菜单和 `D:\github` 的 **GitHub Desktop** 快捷方式统一使用本目录 `Open-GitHubDesktop.ps1`；也可双击本目录的 `启动GitHub.cmd`。该入口每次读取 Windows 当前启用的代理，只传给应用及其 Git 子进程，同时配置 Electron 的代理参数。它保留 HTTPS 证书验证，不修改全局 Git 或系统网络设置。
-
-若 GitHub 官方网页已经显示 **OAuth application authorized**，但未返回应用：保持该授权完成页打开，双击本目录的 `完成GitHub登录.cmd`。辅助入口只将 Microsoft Edge 上 GitHub 官方完成页中的回调交给本机已注册的 D 盘应用，不保存或输出一次性授权参数，不代替账号登录或授权。
-
-原快捷方式备份、登录与同步记录位于 `.setup\state` 和 `.setup\logs\github-desktop-login-check.log`。日常开发使用原项目目录，其中已有虚拟环境、模型和服务数据。
-
-## 基础服务与连接信息
-
-服务统一使用 Compose 项目名 `campus-rag-dev`，全部映射到 `127.0.0.1`，使用独立的持久化数据卷。
-
-| 服务 | 本机地址 | 用户及说明 |
-| --- | --- | --- |
-| MySQL 8.0 | `127.0.0.1:13306` | 库 `campus_rag`；用户 `campus_dev`；密码见 `MYSQL_PASSWORD` |
-| Redis 7.4.2 | `127.0.0.1:6379` | 密码见 `REDIS_PASSWORD` |
-| Elasticsearch 8.11.4 + IK 8.11.4 | `http://127.0.0.1:9200` | 用户 `elastic`；密码见 `ELASTIC_PASSWORD` |
-| MinIO 2024 | `http://127.0.0.1:9000` | 对象存储 API |
-| MinIO 控制台 | `http://127.0.0.1:9001` | 账号、密码见 `MINIO_ROOT_USER`、`MINIO_ROOT_PASSWORD` |
-| Nacos 2.3.2 | `http://127.0.0.1:8848/nacos` | 用户 `nacos`；密码见 `NACOS_ADMIN_PASSWORD`；另开放本机 9848/9849 |
-| RocketMQ 5.3.1 NameServer | `127.0.0.1:9876` | 通过 `-Messaging` 启动 |
-| RocketMQ Broker | `127.0.0.1:10911` | 同时映射本机 10909/10912；为 Windows 本机客户端配置 |
-| Ollama | `http://127.0.0.1:11434` | 模型服务 API；本地模型见下文 |
-
-凭据位于本目录的 `.env`，由初始化脚本随机生成，只允许当前用户、SYSTEM 和管理员访问。可以在本机编辑器中查看并填入后续项目；初始化脚本不会反复更换密码。应连同已有数据卷保管该文件，避免丢失后无法连接已初始化的数据库。
-
-本目录 `.env.application` 另行汇总实际连接信息、模型路径，以及独立随机生成的 APP/JWT 密钥，同样限制文件权限且已排除 Git。由 `Initialize-ApplicationEnvironment.ps1` 生成，重复运行保留原值。接入业务代码时需将变量名对应到实际配置；尚未实现的 Java 网关/文档/检索服务地址，需要按真实代码填写。
-
-需要生成应用参数时，从仓库根目录运行 `./environment/Initialize-ApplicationEnvironment.ps1`。SDK 安装入口为 `Install-PythonDependencies.ps1`，依赖依据为 `requirements-rag.in` 与实际安装生成的锁文件；模型安装与验收入口见下文。
-
-本机已有 `MySQL80` 服务使用 3306，因此本次独立开发实例使用 13306。原有数据库服务未修改。后续项目在 Windows 上运行时应将这套开发数据库连接端口设为 13306；若业务服务运行在同一 Compose 网络内，则仍使用容器端口 3306。
-
-本机 Navicat Premium Lite 17 已添加并验证连接 **校园RAG开发库**，使用 `127.0.0.1:13306`、`campus_dev` 账号，密码由 Navicat 自身保存。打开该连接下的 `campus_rag` 数据库即可使用；原有 `MySQL8.0` 连接保留。验收记录位于 `.setup\logs\navicat-connection-check.log`。
-
-## Docker 与模型服务
-
-本机加密的漫游用户目录无法完成 Docker 所需的原子文件重命名，已为 Docker 单独设置 D 盘配置目录。应使用 `Start-Services.ps1` 或以下脚本启动引擎：
+按需生成供业务代码接入的本机连接参数，并准备或启动模型：
 
 ```powershell
-.\environment\Start-ContainerEngine.ps1
+.\environment\Initialize-ApplicationEnvironment.ps1
+.\environment\Prepare-Models.ps1
 ```
 
-引擎首次启动可能需要几十秒。基础服务启动脚本会自动等待就绪。
+模型已准备好时，使用 `Start-ModelService.ps1` 启动 Ollama，使用 `Test-Models.ps1` 重新验收。首次模型准备会下载大型依赖和权重，应预留磁盘、网络与内存资源。
 
-本次故障原因是安装设置中的 `wslDefaultDataRoot` 指向另一块空数据盘，导致原容器不可见。已固定为 `.local\docker-profile\Local\Docker\wsl`，并完成一次正常停止、重新启动和数据一致性验收。桌面与开始菜单入口统一通过本目录 `Open-DockerDesktop.ps1` 打开同一配置。
-
-- Docker 独立配置：`.local\docker-profile\Roaming\Docker`
-- Docker 镜像及卷磁盘实际位置：`.local\docker-profile\Local\Docker\wsl\disk\docker_data.vhdx`
-- Docker 客户端配置：`.local\docker-cli`；开发终端固定本机 `desktop-linux` 上下文。
-- Ollama 模型目录：`.local\ollama-models`，已设置当前用户的 `OLLAMA_MODELS`，并使用本机回环地址 `OLLAMA_HOST`。
-
-Ollama 后台服务可按需启动、停止：
+结束工作时：
 
 ```powershell
-.\environment\Start-ModelService.ps1
+.\environment\Stop-Services.ps1
 .\environment\Stop-ModelService.ps1
 ```
 
-该电脑为约 16GB 内存、Intel 集成显卡，使用 CPU 模型推理。本地中文嵌入模型为 `BAAI/bge-large-zh-v1.5`，重排模型为 `BAAI/bge-reranker-base`，缓存位于 `.local\models`；下载脚本固定官方模型提交并核验权重 SHA256。Ollama 生成模型选择 `qwen3:1.7b`，模型存于 `.local\ollama-models`。实际下载、加载和生成是否通过，以 `Test-Models.ps1` 及 `.setup\logs` 中的现场验收结果为准。
+停止基础服务会移除这套环境的容器，保留命名数据卷和凭据；不会退出整个 Docker Desktop。模型停止脚本仅停止本环境记录且身份核验一致的 Ollama 进程。不要使用删除数据卷的选项代替日常停止操作。
 
-2026-10-23 三类模型实际验收全部通过：嵌入输出 1024 维且已归一化，中文相关材料得分高于无关材料；重排结果符合相关性；Qwen 输出正确的中文测试答案及引用标记，生成后按 `keep_alive=0` 释放内存。该测试使用人工构造材料，业务平台的完整 RAG 与权限验收仍需真实应用代码。
+## 文件索引
 
-CPU 模型依赖为 PyTorch 2.14.1+cpu、Sentence Transformers 6.2.0、Transformers 5.20.2；锁文件为 `requirements-models.lock.txt`，与 Python SDK 锁同时生效。安装全部模型工具、获取权重并验证使用 `Prepare-Models.ps1`；只重新验证已有模型使用 `Test-Models.ps1`。Qwen 的本次验收 digest 已固定，若官方同名标签改变会要求复核。
+| 分类 | 文件与用途 |
+| --- | --- |
+| 双击入口 | [启动基础服务.cmd](启动基础服务.cmd)、[停止基础服务.cmd](停止基础服务.cmd)、[检查开发环境.cmd](检查开发环境.cmd) 分别调用对应服务和检查脚本；消息组件需用带 `-Messaging` 的 PowerShell 入口 |
+| 开发终端 | [启动开发终端.cmd](启动开发终端.cmd)、[Start-DevTerminal.cmd](Start-DevTerminal.cmd) 调用 [Enter-DevEnvironment.ps1](Enter-DevEnvironment.ps1)，设置当前终端的工具与模型路径 |
+| 凭据初始化 | [Initialize-Environment.ps1](Initialize-Environment.ps1) 生成基础服务凭据；[Initialize-ApplicationEnvironment.ps1](Initialize-ApplicationEnvironment.ps1) 汇总应用连接参数并生成 APP/JWT 密钥 |
+| 容器与服务 | [Start-ContainerEngine.ps1](Start-ContainerEngine.ps1)、[Initialize-ContainerClient.ps1](Initialize-ContainerClient.ps1) 准备本机 Docker；[Start-Services.ps1](Start-Services.ps1)、[Stop-Services.ps1](Stop-Services.ps1) 管理服务；[Common.ps1](Common.ps1) 提供公共函数 |
+| 环境与服务验收 | [Check-Environment.ps1](Check-Environment.ps1) 检查工具、SDK、模型 API 和端口；[Test-Services.ps1](Test-Services.ps1) 检查容器健康、认证及 IK 中文分词，`-Messaging` 另检查消息组件 |
+| SDK 依赖 | [Install-PythonDependencies.ps1](Install-PythonDependencies.ps1) 使用 [requirements-rag.lock.txt](requirements-rag.lock.txt) 安装；[requirements-rag.in](requirements-rag.in) 为依赖声明；[Test-PythonDependencies.py](Test-PythonDependencies.py) 检查兼容性及离线 SDK 调用 |
+| 模型依赖 | [Install-ModelDependencies.ps1](Install-ModelDependencies.ps1) 按 [requirements-models.lock.txt](requirements-models.lock.txt) 安装 CPU 推理依赖，同时遵守 SDK 锁约束；[requirements-models.in](requirements-models.in) 为依赖声明 |
+| 模型准备与服务 | [Prepare-Models.ps1](Prepare-Models.ps1) 安装依赖、下载和验收；[Test-Models.ps1](Test-Models.ps1) 验收已有模型；[Start-ModelService.ps1](Start-ModelService.ps1)、[Stop-ModelService.ps1](Stop-ModelService.ps1) 管理 Ollama |
+| 模型内部助手 | [model-download.py](model-download.py) 固定 BAAI 模型提交并核验权重；[model-download-wheels.py](model-download-wheels.py) 下载并核验依赖包；[model-pull-ollama.py](model-pull-ollama.py) 拉取并校验 Qwen digest；[model-verify.py](model-verify.py) 执行模型推理验收 |
+| 中间件配置 | [docker-compose.yml](docker-compose.yml)、[elasticsearch/Dockerfile](elasticsearch/Dockerfile)、[rocketmq/broker.conf](rocketmq/broker.conf) 定义开发服务、匹配的 IK 插件和本机消息配置 |
+| 参数与资料 | [model-env.example](model-env.example) 为无密钥模型参数；[SOURCES.md](SOURCES.md) 记录镜像和版本来源；[原始项目手册](docs/校园级RAG知识库平台环境安装与首次运行手册.pdf) 为最初安装参考，现行操作以仓库说明为准 |
+| Git 排除规则 | [.gitignore](.gitignore) 与根目录规则共同排除凭据、安装包、缓存、模型、虚拟环境和本机运行数据 |
 
-`model-env.example` 提供无密钥的模型参数；开发终端导出绝对路径。为控制内存，本机模型调用使用小批量、2048 上下文，生成请求显式设置 `keep_alive=0`，完成后卸载模型。该本地生成模型用于开发联调；团队模型选型可以在后续业务实现中调整。
+日常安装使用锁文件；重新解析依赖时才使用依赖声明，并审查和更新对应锁文件。模型 Python 助手属于环境准备工具，业务接口应在 `rag-runtime/` 实现。
 
-## 手册中需在接入项目时确认的内容
+## 基础服务与连接信息
 
-- `bge-large-zh-v1.5` 的官方输出是 **1024 维**；手册所写的 768 维对应 `bge-base-zh-v1.5`。本机按手册指定的 large 模型配置 1024 维；后续 ES `dense_vector.dims` 应一致。当前没有建立业务索引。来源：[BAAI 官方模型卡](https://huggingface.co/BAAI/bge-large-zh-v1.5)。
-- 手册写的 Spring Boot 3.2.x 与 Spring Cloud Alibaba 2022.x 不是官方匹配组合。官方说明中 Alibaba 2023.x 对应 Boot 3.2.x，2022.x 对应 Boot 3.0.x；后续按实际 POM 和锁定依赖确认。来源：[Spring Cloud Alibaba 官方仓库](https://github.com/alibaba/spring-cloud-alibaba)。
-- MinIO 原 2024 镜像下载已被上游移除，使用 OpenEBS 重新发布的同版本镜像并固定摘要，详情见 `SOURCES.md`。
-- Java 服务、Python RAG 应用、Vue 前端、JWT、业务表与索引、RAG 引用及权限验收需要真实源码；本次未生成这些业务内容。
-- 手册列出的 Nginx、Kubernetes、Sentinel、Seata、SkyWalking 属于可选增强项，本次基础开发环境未启用。
+Compose 项目名为 `campus-rag-dev`，服务端口均绑定 `127.0.0.1`，使用独立持久化卷。以下地址属于每位队员自己的电脑，不是团队共享服务器。
 
-## 检查记录与本地文件
+| 服务 | 本机地址 | 用户与凭据变量 |
+| --- | --- | --- |
+| MySQL 8.0 | `127.0.0.1:13306` | 库 `campus_rag`，用户 `campus_dev`，密码 `MYSQL_PASSWORD` |
+| Redis 7.4.2 | `127.0.0.1:6379` | `REDIS_PASSWORD` |
+| Elasticsearch 8.11.4 + IK 8.11.4 | `http://127.0.0.1:9200` | 用户 `elastic`，密码 `ELASTIC_PASSWORD` |
+| MinIO 2024 | API `http://127.0.0.1:9000`，控制台 `http://127.0.0.1:9001` | `MINIO_ROOT_USER`、`MINIO_ROOT_PASSWORD` |
+| Nacos 2.3.2 | `http://127.0.0.1:8848/nacos`，另映射 9848/9849 | 用户 `nacos`，密码 `NACOS_ADMIN_PASSWORD` |
+| RocketMQ 5.3.1 | NameServer `127.0.0.1:9876`；Broker `127.0.0.1:10911`，另映射 10909/10912 | 使用 `-Messaging` 启用 |
+| Ollama | `http://127.0.0.1:11434` | 本地模型 API |
 
-- `.setup\logs\environment-check.log`：工具、Docker Engine、模型服务和本机端口检查记录。
-- `.setup\logs\docker-recovery-check.log`：原数据恢复、七项服务认证、真实重启、容器/数据卷/凭据一致性验收。
-- `.setup\logs\services-final-check.log`：本轮七项服务最终验收结果，文件内记录北京时间。
-- `.setup\logs\python-dependencies-check.log`：开发工具、Python SDK 实际调用与依赖一致性验收。
-- `.setup\logs\models-verification.json`：三模型实际推理结果、维度、相关性得分、版本及内存释放验收。
-- `Test-Services.ps1`：实时验证容器健康、MinIO 认证、Nacos 随机密码、ES IK 中文分词；加 `-Messaging` 验证消息服务。
-- RocketMQ 首次启动会运行一次数据卷目录权限初始化，随后以镜像原有的非 root 用户运行 NameServer 和 Broker。
-- `.setup\logs\ollama-stdout.log`、`ollama-stderr.log`：由开发脚本管理的模型服务日志。
-- 安装包、下载缓存与排障截图在 2026-10-23 整理时清理；保留已安装工具、模型、服务数据和关键检查记录。重新安装模型依赖时，脚本会重新下载并校验所需文件。
-- 早期检查记录中的 `dev-environment/` 与根目录启动入口是当时的路径；当前统一使用 `environment/`。历史日志保持原样，复查时按本说明定位现有文件。
-- 根目录及本目录的 `.gitignore` 已排除凭据、模型、虚拟环境、安装包和运行数据。
+MySQL 默认宿主机端口为 13306，可在本机 `.env` 中配置 `MYSQL_PORT`；同一 Compose 网络内使用服务名和容器端口 3306。RocketMQ 当前公告地址为 `127.0.0.1`，适用于 Windows 宿主机客户端，其他容器或其他电脑的客户端需调整网络配置。消息服务首次启动会初始化数据卷目录权限。
 
-基础服务总内存上限约 3.5GiB；消息组件额外约 1.4GiB，上限不等于实际占用。无需常驻时使用停止入口释放资源；停止不会删除命名数据卷。
+基础服务内存上限合计约 3.5 GiB，消息组件额外约 1.4 GiB；这些上限不代表实际占用，也不包括 Docker、模型及业务应用开销。
+
+## 本机凭据与运行数据
+
+- `environment/.env` 由初始化脚本为各服务随机生成凭据，并设置 Windows 文件权限，仅授予当前用户、SYSTEM 和管理员访问。重复运行保留已有值；Nacos 管理员密码由服务启动流程初始化。
+- `environment/.env.application` 由应用参数初始化脚本生成，包含服务连接信息、模型路径和独立随机 APP/JWT 密钥。已有文件不会被覆盖；业务代码需将变量名接入实际配置，尚未实现的业务地址需按代码填写。
+- 每位队员自行生成本机凭据。不要把负责人的密码、令牌或应用密钥发给队员，也不要提交到仓库；团队通过仓库共享表结构和样例数据。
+- `.env` 应与对应数据卷共同妥善保管。修改或重新生成文件不会自动轮换数据库内已有密码，丢失原文件可能导致无法连接已有数据。
+- 脚本将虚拟环境放在 `.venv/`，模型、工具和缓存放在 `.local/`，检查输出和进程状态放在 `.setup/`。这些工作区相对目录均不随 Git 分发。
+- Compose 验证使用 `config --quiet`，避免将展开后的凭据打印到终端或共享记录中。
+
+## 模型约定与接入限制
+
+| 用途 | 模型与配置 |
+| --- | --- |
+| 中文嵌入 | `BAAI/bge-large-zh-v1.5`，目录 `.local/models/bge-large-zh-v1.5`，输出 **1024 维** |
+| 重排 | `BAAI/bge-reranker-base`，目录 `.local/models/bge-reranker-base` |
+| 本地生成 | Ollama `qwen3:1.7b`，目录 `.local/ollama-models`，固定 digest 校验 |
+| 请求参数 | Ollama 请求显式设置 `keep_alive=0`、`options.num_ctx=2048`，小批量调用控制内存 |
+
+模型下载固定版本并校验权重；同名 Ollama 标签变化时需复核。重新验收使用 `Test-Models.ps1`，检查嵌入维度、相关性、重排和生成结果；这不替代真实业务的完整 RAG 与权限验收。
+
+- 原始手册中 large 嵌入模型的 768 维描述有误，业务 Elasticsearch `dense_vector.dims` 应与实际 1024 维输出一致。
+- Spring Boot、Spring Cloud 和 Spring Cloud Alibaba 的组合需按实际 POM 与官方兼容关系确认，不能直接照搬原始手册的版本组合。
+- MinIO 使用固定摘要的 OpenEBS 同版本镜像，来源说明见 [SOURCES.md](SOURCES.md)。
+- 当前 Compose 只提供基础中间件，尚未提供业务表、索引、JWT 接口或业务服务。Nginx、Kubernetes、Sentinel、Seata、SkyWalking 等增强组件未在本目录启用。

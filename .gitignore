@@ -23,3 +23,16 @@ htmlcov/
 *.egg-info/
 .DS_Store
 Thumbs.db
+
+# Local assistant instructions and owner-only desktop helpers.
+/AGENTS.md
+/environment/Complete-GitHubDesktopSignIn.ps1
+/environment/Open-GitHubDesktop.ps1
+/environment/启动GitHub.cmd
+/environment/完成GitHub登录.cmd
+/environment/Open-DockerDesktop.ps1
+/environment/启动Docker.cmd
+/environment/Start-OwnerEnvironment.ps1
+/environment/启动负责人环境.cmd
+/environment/校园RAG开发环境.code-workspace
+/environment/*.local.md

@@ -11,7 +11,7 @@
 | 使用场景 | 先看什么 | 下一步 |
 | --- | --- | --- |
 | 新队员加入 | [队员信息速查](docs/team/队员信息速查.md) | 按[完整接入手册](docs/team/团队协作与接入.md)准备工具、服务和本人 GitHub 账号 |
-| 负责人日常开发 | [环境操作说明](environment/README.md) | 打开开发终端或 VS Code 工作区，按需启动服务 |
+| 开发环境操作 | [环境操作说明](environment/README.md) | 打开开发终端或用编辑器打开仓库，按需启动服务 |
 | 领取模块任务 | 下方目录说明及各模块 README | 先对齐[接口](docs/api/README.md)、[架构](docs/architecture/README.md)和数据库约定，再实现功能 |
 | 确认文件放哪里 | [目录与开发约定](docs/development/项目目录与开发约定.md) | 按源码、环境、文档和本机运行区的归属维护 |
 
@@ -49,7 +49,6 @@ campus-rag-platform/
 ├── environment/                   环境脚本、启动入口、依赖锁与参考手册
 ├── pom.xml                        Java 17 聚合构建入口
 ├── README.md                      项目首页与文件索引
-├── AGENTS.md                      自动化助手的工作与同步约定
 ├── .editorconfig                  编辑器缩进、编码与换行约定
 ├── .gitattributes                 Git 文件类型与换行约定
 ├── .gitignore                     不提交的本机文件规则
@@ -81,25 +80,25 @@ campus-rag-platform/
 | 文件 | 用途 |
 | --- | --- |
 | [pom.xml](pom.xml) | 统一 Java 17 和六个 `backend/*-service` 模块；构建从仓库根目录执行 |
-| [AGENTS.md](AGENTS.md) | 自动化助手完成修改后的检查、提交与推送要求；普通队员协作流程见接入手册 |
 | [.editorconfig](.editorconfig) | 统一编码、缩进和文件末尾换行 |
 | [.gitattributes](.gitattributes) | 统一 Git 换行处理及 PDF 等文件类型 |
 | [.gitignore](.gitignore) | 排除真实凭据、运行数据、依赖、构建产物和日志 |
 
 ## 环境操作与结构检查
 
-负责人 Windows 本机的日常入口如下，均位于 `environment/`：
+项目共用的 Windows 环境入口如下，均位于 `environment/`：
 
 | 要做的事 | 入口 |
 | --- | --- |
-| 启动完整基础服务与 Ollama | [启动负责人环境.cmd](environment/启动负责人环境.cmd) |
+| 启动含消息队列的完整基础服务 | [Start-Services.ps1](environment/Start-Services.ps1)，加 `-Messaging` |
+| 按需启动 Ollama | [Start-ModelService.ps1](environment/Start-ModelService.ps1) |
 | 打开已配置的开发终端 | [启动开发终端.cmd](environment/启动开发终端.cmd) |
-| 在 VS Code 中开发 | [校园RAG开发环境.code-workspace](environment/校园RAG开发环境.code-workspace)，工作目录仍为仓库根目录 |
+| 在 VS Code 中开发 | 用 VS Code 打开仓库根目录，按本人安装位置配置解释器和 Java 工具 |
 | 仅启动默认五项基础服务 | [启动基础服务.cmd](environment/启动基础服务.cmd) |
 | 检查工具和服务端口 | [检查开发环境.cmd](environment/检查开发环境.cmd)；认证与健康检查见[环境说明](environment/README.md) |
 | 结束基础服务 | [停止基础服务.cmd](environment/停止基础服务.cmd)，保留数据卷；Ollama 另用 [Stop-ModelService.ps1](environment/Stop-ModelService.ps1)停止 |
 
-这些入口沿用负责人安装路径和独立 Docker 配置。新队员先按[队员本机准备](docs/team/团队协作与接入.md#队员本机准备)完成适配；环境文件索引、依赖安装和模型准备步骤见 [environment/README.md](environment/README.md)。
+现有开发终端和 Docker 管理脚本仍有安装路径及独立 Docker 配置约定。新队员先按[队员本机准备](docs/team/团队协作与接入.md#队员本机准备)完成适配；环境文件索引、依赖安装和模型准备步骤见 [environment/README.md](environment/README.md)。个人账号登录辅助、负责人启动包装、编辑器配置与自动化助手本机约定不随仓库分发。
 
 Java 的全部模块仍在仓库根目录构建，指定模块时使用新路径：
 
@@ -119,7 +118,7 @@ mvn -o -B -pl backend/doc-service -am validate
 | `.setup/` | 本机进程状态、检查日志和备份，不上传公开仓库 |
 | `environment/.env`、`environment/.env.application` | 本机生成的随机凭据和应用连接参数，与对应数据卷配套保管，不提交 |
 
-上述三个运行目录在项目 VS Code 工作区中隐藏，实际文件仍保留。团队通过 Git 分享源码、环境脚本、模板、依赖锁、文档、迁移和可公开样例；模型权重、数据盘、安装包、个人授权和密码不通过仓库分享。
+上述三个运行目录保留既有本机路径。团队通过 Git 分享源码、共用环境脚本、模板、依赖锁、文档、迁移和可公开样例；模型权重、数据盘、安装包、个人授权、密码和本机专用辅助文件不通过仓库分享。忽略规则只控制提交范围，本机已有工具、数据和辅助入口继续保留。
 
 各成员当前使用自己的本地服务，`127.0.0.1` 指各自电脑；没有团队共享服务器。MySQL 通过仓库统一结构与开发样例，不共用负责人数据盘或管理员账号。地址、版本与模型参数统一查[接入手册](docs/team/团队协作与接入.md)和[环境说明](environment/README.md)，文件归属细则见[目录与开发约定](docs/development/项目目录与开发约定.md)。
 
