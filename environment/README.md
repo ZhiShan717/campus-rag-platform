@@ -4,6 +4,8 @@
 
 完整的 Windows 软件安装、实际仓库路径、脚本适配及分层验收步骤见[详细安装与配置指南 PDF](../output/pdf/校园RAG平台_详细安装与配置指南.pdf)，对应[可编辑正文](../docs/team/详细安装与配置指南.md)以当前仓库修订。新队员复用本人已有 Docker Desktop 时，优先阅读指南第 09-11 节，避免直接切换负责人独立数据目录启动器。
 
+软件官网、阿里云安装包镜像、pip/npm/Maven 依赖源及其区别集中在指南第 24-26 节；下载地址仅作为备选来源，不会自动改变现有脚本使用的官方源或项目锁定版本。
+
 ## 使用前确认
 
 - 当前脚本面向 Windows PowerShell，Docker Desktop 使用 WSL2 后端和 Linux 容器。凭据初始化使用 Windows 文件权限，CPU 模型安装固定 Python 3.11、Windows x64 的 PyTorch 包；其他系统需另行适配。
