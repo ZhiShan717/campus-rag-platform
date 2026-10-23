@@ -1,137 +1,88 @@
 # 校园 RAG 知识库平台
 
-团队公开仓库：[ZhiShan717/campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform)，默认分支 `main`。任何人都可浏览和通过 HTTPS 克隆；向原仓库推送仍需写入权限。
+公开仓库：[ZhiShan717/campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform)，默认分支 `main`。读取和克隆无需邀请，向原仓库推送需要写入权限。
 
-本仓库统一管理 Java 后端、Python RAG 运行时、Vue 前端和开发环境。**当前为工程目录骨架，业务应用尚未实现。** 六个 Java 模块已接入 Java 17 聚合 POM，基础环境与模型脚本可复用。
+本仓库分为两个区域：**[project/](project/README.md) 保存业务项目，[environment/](environment/README.md) 保存开发环境配置与安装资料**。当前仍为工程骨架：六个 Java 模块已有聚合 POM，Python 与前端已有目录规划，业务网站、API 和完整问答链路尚未实现。
 
-本说明与 2026-10-23 的实际文件结构一致。基础服务和模型曾在负责人电脑上验证，成员仍需准备各自环境；不能将目录或环境检查通过视为业务功能已经完成。
+## 阅读入口
 
-需要逐步安装说明时，下载 **[详细安装与配置指南 PDF](output/pdf/校园RAG平台_详细安装与配置指南.pdf)**；可编辑正文位于 [docs/team/详细安装与配置指南.md](docs/team/详细安装与配置指南.md)。指南包含真实仓库与本机路径、软件安装、Docker 适配、服务和模型验收，并区分当前可执行步骤与后续业务开发；第 24-26 节另列官网、阿里云镜像下载地址及依赖换源说明。
+| 要做的事 | 入口 |
+| --- | --- |
+| 新队员了解仓库、权限与加入步骤 | [队员信息速查](project/docs/team/队员信息速查.md)、[团队协作与接入](project/docs/team/团队协作与接入.md) |
+| 安装软件、配置服务和模型 | [环境操作说明](environment/README.md)、[详细安装指南正文](environment/docs/详细安装与配置指南.md) |
+| 下载或离线阅读手册 | [详细安装与配置指南 PDF](environment/output/pdf/校园RAG平台_详细安装与配置指南.pdf) |
+| 验证本人配置是否完成 | [指南第 27-31 节](environment/docs/详细安装与配置指南.md#27-队员自检准备与完成判定)：命令、通过标准、模型报告时间和验收记录 |
+| 查官网、阿里云镜像及依赖源 | 指南第 24-26 节，保留版本、架构和校验要求 |
+| 开始业务开发与查文件归属 | [项目入口](project/README.md)、[业务文档导航](project/docs/README.md)、[目录与开发约定](project/docs/development/项目目录与开发约定.md) |
 
-安装后按指南[第 27 节起的队员自检流程](docs/team/详细安装与配置指南.md#27-队员自检准备与完成判定)逐项验证。第 27-31 节包含验证命令、通过标准、模型报告时间核对和验收记录模板，可按职责标注消息组件与本地模型是否适用。
+## 目录结构
 
-## 阅读与使用顺序
+```text
+campus-rag-platform/                Git 仓库根
+├── project/                       业务项目区
+│   ├── README.md                  业务入口与结构检查
+│   ├── pom.xml                    Java 17 聚合 POM
+│   ├── backend/                   gateway/auth/doc/search/admin/eval 六个服务
+│   ├── frontend/                  Vue 页面、组件、API 与模块测试
+│   ├── rag-runtime/               Python RAG、编排、MCP、护栏与评测
+│   ├── database/                  迁移、人工样例与 ES 索引定义
+│   ├── deploy/                    业务镜像、Nginx 与 Kubernetes 部署
+│   ├── tests/                     跨模块集成、端到端验证与构造材料
+│   └── docs/                      团队、开发、接口与架构文档
+├── environment/                   环境配置区
+│   ├── README.md                  安装、启动、验证与脚本索引
+│   ├── *.ps1、*.py、*.cmd         环境和模型管理入口
+│   ├── docker-compose.yml         开发中间件配置
+│   ├── elasticsearch/、rocketmq/  中间件附属配置
+│   ├── requirements-*             SDK 与模型依赖声明/锁
+│   ├── model-env.example          无密钥模型参数
+│   ├── docs/                      原始手册、指南正文与资料索引
+│   └── output/pdf/                可分发的安装指南 PDF
+├── README.md                      本导航
+├── .editorconfig、.gitattributes   编码、缩进和换行约定
+├── .gitignore                     本机文件排除规则
+├── .local/                        本机工具、模型、Docker 配置与数据
+├── .venv/                         本机 Python 虚拟环境
+└── .setup/                        本机日志、进程记录与检查工具
+```
 
-| 使用场景 | 先看什么 | 下一步 |
-| --- | --- | --- |
-| 新队员加入 | [队员信息速查](docs/team/队员信息速查.md) | 按[完整接入手册](docs/team/团队协作与接入.md)准备工具、服务和本人 GitHub 账号 |
-| 开发环境操作 | [环境操作说明](environment/README.md) | 打开开发终端或用编辑器打开仓库，按需启动服务 |
-| 领取模块任务 | 下方目录说明及各模块 README | 先对齐[接口](docs/api/README.md)、[架构](docs/architecture/README.md)和数据库约定，再实现功能 |
-| 确认文件放哪里 | [目录与开发约定](docs/development/项目目录与开发约定.md) | 按源码、环境、文档和本机运行区的归属维护 |
+`project/deploy/` 管业务部署，`environment/docker-compose.yml` 管开发中间件。`.gitkeep` 用于保留尚无实现的业务目录，加入真实文件后可移除对应占位。
 
-获取项目：
+根 `.local/`、`.venv/`、`.setup/` 属于被 Git 忽略的本机环境运行区，保持既有绝对路径。工具、模型、凭据和 Docker 数据继续使用原位置；个人登录辅助、负责人启动包装和编辑器配置仅留本机。
+
+## 获取仓库与命令位置
 
 ```powershell
 git clone https://github.com/ZhiShan717/campus-rag-platform.git
 cd campus-rag-platform
 ```
 
-克隆只获得仓库中的源码骨架、环境配置和说明，不会带上负责人电脑里的工具、模型、虚拟环境或数据库数据。
+克隆获得业务骨架、共用环境配置与资料；每位队员按手册准备自己的工具和依赖。负责人仓库根为 `D:\campus_RAG_work`，业务根为 `D:\campus_RAG_work\project`；队员可使用 `D:\Projects\campus-rag-platform`。
 
-## 目录总览
-
-```text
-campus-rag-platform/
-├── backend/                       Java 后端
-│   ├── gateway-service/           网关与路由
-│   ├── auth-service/              用户、角色与权限
-│   ├── doc-service/               文档、版本与处理任务
-│   ├── search-service/            检索与 Java/Python 协作
-│   ├── admin-service/             管理功能
-│   └── eval-service/              评测任务与结果
-├── frontend/                      Vue 页面、组件与接口调用
-├── rag-runtime/                   Python 检索、重排、生成、编排与 MCP
-├── database/                      MySQL 迁移、开发样例与 ES 索引定义
-├── deploy/                        业务 Docker、Nginx 与 Kubernetes 部署
-├── tests/                         跨模块 integration、e2e 与 fixtures
-├── docs/
-│   ├── README.md                  文档总导航
-│   ├── team/                      队员速查与完整接入手册
-│   ├── development/               目录归属与开发规范
-│   ├── api/                       接口契约
-│   └── architecture/              架构决策
-├── environment/                   环境脚本、启动入口、依赖锁与参考手册
-├── output/pdf/                    项目详细安装与配置指南 PDF
-├── pom.xml                        Java 17 聚合构建入口
-├── README.md                      项目首页与文件索引
-├── .editorconfig                  编辑器缩进、编码与换行约定
-├── .gitattributes                 Git 文件类型与换行约定
-├── .gitignore                     不提交的本机文件规则
-├── .local/                        本机工具、模型与服务数据
-├── .venv/                         本机 Python 虚拟环境
-├── .setup/                        本机状态、日志与检查记录
-└── .git/                          本地 Git 历史与远端信息
-```
-
-末尾四个以点开头的目录属于本机区域，不是业务源码；其中 `.local/`、`.venv/`、`.setup/` 不进入版本控制。空的开发目录用 `.gitkeep` 保留，加入真实文件后可删除对应占位。
-
-## 项目目录与文件用途
-
-| 目录 | 维护内容与关键位置 | 当前状态 |
-| --- | --- | --- |
-| [backend/](backend/README.md) | 六个 Java 服务；各模块有 `pom.xml`、`src/main/java/`、`src/main/resources/`、`src/test/java/` | 聚合结构已建立，尚无启动类与业务依赖 |
-| [frontend/](frontend/README.md) | `src/views/` 页面、`components/` 组件、`api/` 调用、路由、状态与模块测试 | 已划分目录，尚无 `package.json`、包锁与应用入口 |
-| [rag-runtime/](rag-runtime/README.md) | `src/` API 预留位置，`rag/` 检索生成，`graph/` 编排，`mcp_server/` 工具，`guardrails/` 检查，`eval/` 评测，`config/` 配置约定 | 已有目录与依赖入口，尚无业务 API 或完整问答链路 |
-| [database/](database/README.md) | `mysql/migrations/` 迁移、`mysql/seeds/` 开发样例、`elasticsearch/index-templates/` 索引定义 | 尚无业务表、迁移 SQL 与索引定义；文件不会自动执行 |
-| [deploy/](deploy/README.md) | `docker/` 业务镜像、`nginx/` 代理、`k8s/` 部署清单 | 预留目录，尚无业务部署产物 |
-| [tests/](tests/README.md) | `integration/` 跨模块验证、`e2e/` 端到端验证、`fixtures/` 可公开的构造材料 | 预留目录，尚无业务测试框架或用例 |
-| [docs/](docs/README.md) | 团队接入、开发规范、接口与架构资料 | 已有团队与目录说明，业务接口和设计待落实 |
-| [environment/](environment/README.md) | 开发中间件 Compose、依赖锁、初始化、工具与模型脚本、Windows 启动入口、原始 PDF | 已有负责人本机配置；其他电脑运行前需适配路径和 Docker 配置 |
-| [output/pdf/](output/pdf/校园RAG平台_详细安装与配置指南.pdf) | 可分发的详细安装指南；可编辑正文在 `docs/team/` | 已结合原手册与当前仓库修订，不含真实凭据 |
-
-`environment/` 管开发环境，`deploy/` 管业务部署。模块自身测试跟随模块；跨模块测试集中在根 `tests/`。环境和模型检查使用 `environment/` 的现有脚本。
-
-根目录文件的职责：
-
-| 文件 | 用途 |
-| --- | --- |
-| [pom.xml](pom.xml) | 统一 Java 17 和六个 `backend/*-service` 模块；构建从仓库根目录执行 |
-| [.editorconfig](.editorconfig) | 统一编码、缩进和文件末尾换行 |
-| [.gitattributes](.gitattributes) | 统一 Git 换行处理及 PDF 等文件类型 |
-| [.gitignore](.gitignore) | 排除真实凭据、运行数据、依赖、构建产物和日志 |
-
-## 环境操作与结构检查
-
-项目共用的 Windows 环境入口如下，均位于 `environment/`：
-
-| 要做的事 | 入口 |
-| --- | --- |
-| 启动含消息队列的完整基础服务 | [Start-Services.ps1](environment/Start-Services.ps1)，加 `-Messaging` |
-| 按需启动 Ollama | [Start-ModelService.ps1](environment/Start-ModelService.ps1) |
-| 打开已配置的开发终端 | [启动开发终端.cmd](environment/启动开发终端.cmd) |
-| 在 VS Code 中开发 | 用 VS Code 打开仓库根目录，按本人安装位置配置解释器和 Java 工具 |
-| 仅启动默认五项基础服务 | [启动基础服务.cmd](environment/启动基础服务.cmd) |
-| 检查工具和服务端口 | [检查开发环境.cmd](environment/检查开发环境.cmd)；认证与健康检查见[环境说明](environment/README.md) |
-| 结束基础服务 | [停止基础服务.cmd](environment/停止基础服务.cmd)，保留数据卷；Ollama 另用 [Stop-ModelService.ps1](environment/Stop-ModelService.ps1)停止 |
-
-现有开发终端和 Docker 管理脚本仍有安装路径及独立 Docker 配置约定。新队员先按[队员本机准备](docs/team/团队协作与接入.md#队员本机准备)完成适配；环境文件索引、依赖安装和模型准备步骤见 [environment/README.md](environment/README.md)。个人账号登录辅助、负责人启动包装、编辑器配置与自动化助手本机约定不随仓库分发。
-
-Java 的全部模块仍在仓库根目录构建，指定模块时使用新路径：
+**环境命令从仓库根执行。** 先按手册第 07、09-11 节适配本人工具路径、Docker context 和数据目录，再启动或验证服务。
 
 ```powershell
-mvn -o -B validate
-mvn -o -B -pl backend/doc-service -am validate
+. .\environment\Enter-DevEnvironment.ps1
+.\environment\Check-Environment.ps1
 ```
 
-上述命令验证模块结构。Java 启动类、Python 业务 API 和前端工程入口仍待实现，目前没有业务启动命令或可访问的业务网站。
+工具表、端口、服务认证和模型推理是不同检查层次，按指南逐项判断。已有环境无需重复安装或重建数据卷。
 
-## 本机文件与团队共享
+**业务 Maven 从仓库根指定项目 POM：**
 
-| 本机位置 | 内容与处理方式 |
-| --- | --- |
-| `.local/` | 已安装工具、模型、Docker 配置与数据，保留原路径；不分发或提交 |
-| `.venv/` | 每人的 Python 环境，按统一锁文件自行创建和安装 |
-| `.setup/` | 本机进程状态、检查日志和备份，不上传公开仓库 |
-| `environment/.env`、`environment/.env.application` | 本机生成的随机凭据和应用连接参数，与对应数据卷配套保管，不提交 |
+```powershell
+mvn.cmd -f .\project\pom.xml -o -B validate
+mvn.cmd -f .\project\pom.xml -o -B -pl backend/doc-service -am validate
+```
 
-上述三个运行目录保留既有本机路径。团队通过 Git 分享源码、共用环境脚本、模板、依赖锁、文档、迁移和可公开样例；模型权重、数据盘、安装包、个人授权、密码和本机专用辅助文件不通过仓库分享。忽略规则只控制提交范围，本机已有工具、数据和辅助入口继续保留。
+也可进入 `project/` 后执行 `mvn.cmd -o -B validate`。`-pl backend/doc-service` 相对于 `project/pom.xml`，不用再加 `project/`。当前仅校验根项目与六个模块共七项结构，不证明业务服务已可启动。
 
-各成员当前使用自己的本地服务，`127.0.0.1` 指各自电脑；没有团队共享服务器。MySQL 通过仓库统一结构与开发样例，不共用负责人数据盘或管理员账号。地址、版本与模型参数统一查[接入手册](docs/team/团队协作与接入.md)和[环境说明](environment/README.md)，文件归属细则见[目录与开发约定](docs/development/项目目录与开发约定.md)。
+Python 使用仓库根 `.venv/`；[业务依赖入口](project/rag-runtime/requirements.txt)引用 [SDK 锁](environment/requirements-rag.lock.txt)，不复制版本清单。前端尚无 `package.json`，须先完成工程初始化再按实际脚本安装和启动。
 
-## 协作与文档维护
+## 分享边界与协作
 
-队员用本人 GitHub 账号，有原仓库写入权限时推送任务分支，否则通过个人 Fork 提交 Pull Request；具体步骤见[代码协作](docs/team/团队协作与接入.md#代码协作)。模块分工、框架依赖、接口、业务端口和验收标准仍需团队确定。
+通过 Git 分享 `project/` 业务源码、部署、测试与文档，以及 `environment/` 的共用脚本、Compose、依赖锁和安装资料。`environment/.env`、`.env.application`、根 `.local/`、`.venv/`、`.setup/`、个人授权、模型、数据盘与日志不提交。
 
-新增或移动目录时同步更新本 README 与对应目录的 README；跨模块接口和设计分别在 `docs/api/`、`docs/architecture/` 维护，目录规则在开发约定中维护。维护完成后检查链接与相关功能，再按项目工作约定提交、推送并确认远端同步。
+当前没有团队共享服务器，`127.0.0.1` 指各自电脑。共享数据库迁移和可公开样例，不共用负责人的数据盘或管理员账号。
 
-手册中的仓库占位符和环境版本差异，以本仓库文档为准。各模块完成工程初始化和业务实现后，再执行业务构建、启动、问答、引用、权限和评测验收。
+Git 操作仍在仓库根执行。有写入权限时使用任务分支，无写入权限时通过个人 Fork 提交 Pull Request，步骤见[代码协作](project/docs/team/团队协作与接入.md#代码协作)。目录、接口、依赖或配置变化时同步说明，检查通过后提交并正常推送，不强制覆盖其他成员的提交。

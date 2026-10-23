@@ -1,2 +1,0 @@
-# Shared Python 3.11 SDK lock. Model dependencies use Prepare-Models.ps1.
--r ../environment/requirements-rag.lock.txt

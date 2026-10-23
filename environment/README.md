@@ -1,12 +1,16 @@
 # 项目开发环境
 
-本目录维护团队共享的开发中间件、Python 依赖、模型准备和环境检查工具。项目业务代码分别位于 `backend/`、`rag-runtime/` 和 `frontend/`；当前仍处于目录骨架阶段，启动基础服务不代表业务平台已经可用。队员先阅读[团队协作与接入](../docs/team/团队协作与接入.md)，完整目录见[项目目录与开发约定](../docs/development/项目目录与开发约定.md)。
+本目录维护团队共享的开发中间件、Python 依赖、模型准备和环境检查工具。项目业务代码分别位于 `project/backend/`、`project/rag-runtime/` 和 `project/frontend/`；当前仍处于目录骨架阶段，启动基础服务不代表业务平台已经可用。队员先阅读[团队协作与接入](../project/docs/team/团队协作与接入.md)，完整目录见[项目目录与开发约定](../project/docs/development/项目目录与开发约定.md)。
 
-完整的 Windows 软件安装、实际仓库路径、脚本适配及分层验收步骤见[详细安装与配置指南 PDF](../output/pdf/校园RAG平台_详细安装与配置指南.pdf)，对应[可编辑正文](../docs/team/详细安装与配置指南.md)以当前仓库修订。新队员复用本人已有 Docker Desktop 时，优先阅读指南第 09-11 节，避免直接切换负责人独立数据目录启动器。
+完整的 Windows 软件安装、实际仓库路径、脚本适配及分层验收步骤见[详细安装与配置指南 PDF](output/pdf/校园RAG平台_详细安装与配置指南.pdf)，对应[可编辑正文](docs/详细安装与配置指南.md)以当前仓库修订。新队员复用本人已有 Docker Desktop 时，优先阅读指南第 09-11 节，避免直接切换负责人独立数据目录启动器。
 
 软件官网、阿里云安装包镜像、pip/npm/Maven 依赖源及其区别集中在指南第 24-26 节；下载地址仅作为备选来源，不会自动改变现有脚本使用的官方源或项目锁定版本。
 
-安装完成后使用[队员配置自检流程（第 27-31 节）](../docs/team/详细安装与配置指南.md#27-队员自检准备与完成判定)，核对工具与 SDK、Maven、容器认证、按需模型及本次报告时间，并填写验收记录。`Check-Environment.ps1` 的 `LISTENING` 只表示 TCP 可连接，`NOT RUNNING` 默认不导致脚本失败；服务须再用 `Test-Services.ps1`，模型须再用 `Test-Models.ps1` 验证。PowerShell 脚本看异常和完整结果，不用残留的 `$LASTEXITCODE` 判断整体成功。
+安装完成后使用[队员配置自检流程（第 27-31 节）](docs/详细安装与配置指南.md#27-队员自检准备与完成判定)，核对工具与 SDK、Maven、容器认证、按需模型及本次报告时间，并填写验收记录。`Check-Environment.ps1` 的 `LISTENING` 只表示 TCP 可连接，`NOT RUNNING` 默认不导致脚本失败；服务须再用 `Test-Services.ps1`，模型须再用 `Test-Models.ps1` 验证。PowerShell 脚本看异常和完整结果，不用残留的 `$LASTEXITCODE` 判断整体成功。
+
+## 目录归属
+
+本目录集中环境脚本、Compose、依赖锁和安装资料；业务代码、部署与业务文档集中在仓库根 `project/`。本目录 `docs/` 保存指南正文与原始手册，`output/pdf/` 保存指南 PDF。根 `.local/`、`.venv/`、`.setup/` 是被忽略的本机运行区，保持原路径。环境命令仍从仓库根执行；Maven 使用 `mvn.cmd -f .\project\pom.xml -o -B validate`。
 
 ## 使用前确认
 
@@ -80,7 +84,7 @@ python -m venv .venv
 | 参数与资料 | [model-env.example](model-env.example) 为无密钥模型参数；[SOURCES.md](SOURCES.md) 记录镜像和版本来源；[原始项目手册](docs/校园级RAG知识库平台环境安装与首次运行手册.pdf) 为最初安装参考，现行操作以仓库说明为准 |
 | Git 排除规则 | [.gitignore](.gitignore) 与根目录规则共同排除凭据、安装包、缓存、模型、虚拟环境和本机运行数据 |
 
-日常安装使用锁文件；重新解析依赖时才使用依赖声明，并审查和更新对应锁文件。模型 Python 助手属于环境准备工具，业务接口应在 `rag-runtime/` 实现。
+日常安装使用锁文件；重新解析依赖时才使用依赖声明，并审查和更新对应锁文件。模型 Python 助手属于环境准备工具，业务接口应在 `project/rag-runtime/` 实现。
 
 ## 基础服务与连接信息
 
