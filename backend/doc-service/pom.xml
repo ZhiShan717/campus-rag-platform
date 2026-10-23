@@ -8,10 +8,10 @@
         <groupId>cn.campus.rag</groupId>
         <artifactId>campus-rag-platform</artifactId>
         <version>0.1.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>eval-service</artifactId>
+    <artifactId>doc-service</artifactId>
     <packaging>jar</packaging>
-    <name>Campus RAG 评测服务</name>
+    <name>Campus RAG 文档服务</name>
 </project>

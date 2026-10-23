@@ -14,6 +14,7 @@
       }
     },
     "terminal.integrated.defaultProfile.windows": "Campus RAG",
+    "files.exclude": { "**/.local": true, "**/.venv": true, "**/.setup": true },
     "files.watcherExclude": {
       "**/.local/**": true,
       "**/.venv/**": true,

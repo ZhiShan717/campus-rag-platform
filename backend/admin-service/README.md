@@ -22,7 +22,7 @@
 在仓库根目录使用项目开发终端执行：
 
 ```powershell
-mvn -pl admin-service -am validate
+mvn -pl backend/admin-service -am validate
 ```
 
 执行 `mvn validate` 可一次验证父 POM 和全部 Java 模块。此命令验证 Maven 结构，不表示服务已实现或可运行。

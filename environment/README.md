@@ -1,12 +1,24 @@
 # 本机开发环境说明
 
-配置日期：2026-10-22，补充验收与目录整理：2026-10-23。按[《校园级RAG知识库平台环境安装与首次运行手册》](docs/校园级RAG知识库平台环境安装与首次运行手册.pdf)准备，按项目负责人角色配置开发工具、完整基础服务、Python AI 依赖和本地模型。团队仓库 [campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform) 为公开仓库，可匿名浏览与 HTTPS 克隆；推送需本人账号及相应写入权限。已建立[项目目录骨架](../docs/项目目录与开发约定.md)，业务功能仍待实现。队员接入与 Fork 协作请先看[团队协作与接入](../docs/团队协作与接入.md)，目录整理见[文件夹说明](../docs/文件夹说明.md)。
+配置日期：2026-10-22，补充验收与目录整理：2026-10-23。按[《校园级RAG知识库平台环境安装与首次运行手册》](docs/校园级RAG知识库平台环境安装与首次运行手册.pdf)准备，按项目负责人角色配置开发工具、完整基础服务、Python AI 依赖和本地模型。团队仓库 [campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform) 为公开仓库，可匿名浏览与 HTTPS 克隆；推送需本人账号及相应写入权限。已建立[项目目录骨架](../docs/development/项目目录与开发约定.md)，业务功能仍待实现。队员接入与 Fork 协作请先看[团队协作与接入](../docs/team/团队协作与接入.md)，其他文档见[文档导航](../docs/README.md)。
 
 下文 `.local`、`.venv`、`.setup` 均相对于 `D:\campus_RAG_work`；凭据文件的完整位置为 `D:\campus_RAG_work\environment\.env`。
 
+## 按任务查找入口
+
+| 要做的事 | 入口或说明 |
+| --- | --- |
+| 每天启动负责人环境 | 双击 [启动负责人环境.cmd](启动负责人环境.cmd)，启动完整基础服务和 Ollama |
+| 打开开发终端 | 双击 [启动开发终端.cmd](启动开发终端.cmd) |
+| 检查开发环境 | 双击 [检查开发环境.cmd](检查开发环境.cmd)；服务认证检查见 [日常使用](#日常使用) |
+| 结束工作、停止服务 | 双击 [停止基础服务.cmd](停止基础服务.cmd)；停止 Ollama 使用 [Stop-ModelService.ps1](Stop-ModelService.ps1) |
+| 首次安装 Python 依赖 | [Install-PythonDependencies.ps1](Install-PythonDependencies.ps1)，说明见 [开发工具](#开发工具) |
+| 准备或验证本地模型 | [Prepare-Models.ps1](Prepare-Models.ps1)、[Test-Models.ps1](Test-Models.ps1)，说明见 [Docker 与模型服务](#docker-与模型服务) |
+| GitHub 登录回调或 Docker 启动排障 | [GitHub Desktop 登录与使用](#github-desktop-登录与使用)、[Docker 与模型服务](#docker-与模型服务) |
+
 ## 本目录内容与项目边界
 
-本目录集中维护开发环境；Java、Python、前端业务源码以及数据库迁移、业务部署、业务测试和团队文档保留在仓库根目录各自的项目目录中。
+本目录集中维护开发环境；Java 服务集中在根目录 `backend/` 下，Python、前端、数据库、部署、测试与团队资料分别在 `rag-runtime/`、`frontend/`、`database/`、`deploy/`、`tests/`、`docs/` 维护，文件归属见[目录与开发约定](../docs/development/项目目录与开发约定.md)。
 
 | 内容 | 位置 |
 | --- | --- |

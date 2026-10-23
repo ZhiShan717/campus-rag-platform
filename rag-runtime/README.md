@@ -38,7 +38,7 @@ python --version
 python -m pip install -r .\rag-runtime\requirements.txt
 ```
 
-`requirements.txt` 直接引用 [SDK 依赖锁](../environment/requirements-rag.lock.txt)，不另维护一份版本清单。新队员先按[团队协作与接入说明](../docs/团队协作与接入.md)完成基础环境准备，再使用上述入口。
+`requirements.txt` 直接引用 [SDK 依赖锁](../environment/requirements-rag.lock.txt)，不另维护一份版本清单。新队员先按[团队协作与接入说明](../docs/team/团队协作与接入.md)完成基础环境准备，再使用上述入口。
 
 ## 模型与配置
 

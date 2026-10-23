@@ -13,12 +13,12 @@
     <description>校园 RAG 平台 Java 服务目录骨架</description>
 
     <modules>
-        <module>gateway-service</module>
-        <module>auth-service</module>
-        <module>doc-service</module>
-        <module>search-service</module>
-        <module>admin-service</module>
-        <module>eval-service</module>
+        <module>backend/gateway-service</module>
+        <module>backend/auth-service</module>
+        <module>backend/doc-service</module>
+        <module>backend/search-service</module>
+        <module>backend/admin-service</module>
+        <module>backend/eval-service</module>
     </modules>
 
     <properties>
