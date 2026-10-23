@@ -37,6 +37,55 @@ Docker 已于 2026-10-22 23:43（北京时间）完成修复和真实重启验�
 
 2026-10-23 环境目录整合后，已使用 `environment/Start-Services.ps1 -Messaging` 验证新入口，并刷新开发容器的 Compose 管理记录，使其统一指向 `environment/docker-compose.yml`。七项服务健康、九个数据卷一致，RocketMQ Broker 已使用迁移后的配置；凭据内容与文件权限、Docker 登录、Ollama 及本机运行区均保留，六个外部快捷方式已备份并更新。整合检查记录位于 `.setup/logs/environment-layout-check.json`。
 
+## 环境文件索引
+
+### 双击入口与对应脚本
+
+| 双击入口 | 对应脚本与用途 |
+| --- | --- |
+| [启动负责人环境.cmd](启动负责人环境.cmd) | [Start-OwnerEnvironment.ps1](Start-OwnerEnvironment.ps1)：启动含 RocketMQ 的基础服务与 Ollama |
+| [启动基础服务.cmd](启动基础服务.cmd) | [Start-Services.ps1](Start-Services.ps1)：启动基础服务；可传入 `-Messaging` 启用 RocketMQ |
+| [停止基础服务.cmd](停止基础服务.cmd) | [Stop-Services.ps1](Stop-Services.ps1)：停止并移除环境容器，保留数据卷和凭据 |
+| [启动开发终端.cmd](启动开发终端.cmd) | [Start-DevTerminal.cmd](Start-DevTerminal.cmd) → [Enter-DevEnvironment.ps1](Enter-DevEnvironment.ps1)：在仓库根目录打开已配置工具和模型路径的终端 |
+| [检查开发环境.cmd](检查开发环境.cmd) | [Check-Environment.ps1](Check-Environment.ps1)：检查工具、SDK、模型 API 与端口；服务认证另用 `Test-Services.ps1` |
+| [启动Docker.cmd](启动Docker.cmd) | [Open-DockerDesktop.ps1](Open-DockerDesktop.ps1)：启动并等待引擎，使用同一本机配置打开图形界面 |
+| [启动GitHub.cmd](启动GitHub.cmd) | [Open-GitHubDesktop.ps1](Open-GitHubDesktop.ps1)：按 Windows 当前代理设置打开 GitHub Desktop |
+| [完成GitHub登录.cmd](完成GitHub登录.cmd) | [Complete-GitHubDesktopSignIn.ps1](Complete-GitHubDesktopSignIn.ps1)：本人完成官方网页授权后，辅助将 Edge 中的回调交给本机应用 |
+
+### 初始化、服务与依赖管理
+
+| 文件 | 用途 |
+| --- | --- |
+| [Initialize-Environment.ps1](Initialize-Environment.ps1)、[Initialize-ApplicationEnvironment.ps1](Initialize-ApplicationEnvironment.ps1) | 分别生成基础服务凭据与应用连接参数；已有值保留，不轮换密钥 |
+| [Initialize-ContainerClient.ps1](Initialize-ContainerClient.ps1)、[Start-ContainerEngine.ps1](Start-ContainerEngine.ps1) | 配置独立 Docker 客户端插件路径，并通过本机独立配置启动引擎 |
+| [Common.ps1](Common.ps1) | 供服务脚本加载的 Compose 参数、凭据读取、引擎等待与 Nacos 认证辅助函数 |
+| [Test-Services.ps1](Test-Services.ps1) | 验证容器健康、认证及中文分词；`-Messaging` 另检查消息组件 |
+| [Install-PythonDependencies.ps1](Install-PythonDependencies.ps1)、[Test-PythonDependencies.py](Test-PythonDependencies.py) | 安装 SDK 依赖并检查兼容性、离线 SDK 调用；不启动业务应用 |
+| [Install-ModelDependencies.ps1](Install-ModelDependencies.ps1) | 安装 CPU 模型推理依赖，并使用 SDK 锁文件约束兼容性 |
+| [Prepare-Models.ps1](Prepare-Models.ps1)、[Test-Models.ps1](Test-Models.ps1) | 前者依次安装依赖、下载模型并验收；后者只验收已有模型，必要时启动 Ollama |
+| [Start-ModelService.ps1](Start-ModelService.ps1)、[Stop-ModelService.ps1](Stop-ModelService.ps1) | 启动本地 Ollama；停止脚本仅停止本环境记录且身份核验一致的进程 |
+
+模型脚本使用以下 Python 助手；它们处理环境准备和验收，不是 `rag-runtime/` 的业务入口：
+
+| 内部助手 | 用途 |
+| --- | --- |
+| [model-download.py](model-download.py) | 从固定 Hugging Face 提交下载 BAAI 模型，并核验权重 |
+| [model-download-wheels.py](model-download-wheels.py) | 从官方 PyPI 下载模型所需的大型依赖包并校验 SHA256，供模型依赖安装脚本调用 |
+| [model-pull-ollama.py](model-pull-ollama.py) | 通过本地 Ollama API 拉取 Qwen，并核对固定 digest |
+| [model-verify.py](model-verify.py) | 验证嵌入、重排和本地生成，将验收记录写入本机 `.setup/logs/` |
+
+### 配置与参考文件
+
+| 文件 | 用途 |
+| --- | --- |
+| [docker-compose.yml](docker-compose.yml) | 开发中间件、健康检查、持久化卷与可选消息组件 |
+| [elasticsearch/Dockerfile](elasticsearch/Dockerfile)、[rocketmq/broker.conf](rocketmq/broker.conf) | 分别安装与 ES 匹配的 IK 插件、配置面向本机客户端的开发 Broker |
+| [requirements-rag.in](requirements-rag.in)、[requirements-rag.lock.txt](requirements-rag.lock.txt) | SDK 依赖声明与固定安装版本；日常安装优先使用锁文件 |
+| [requirements-models.in](requirements-models.in)、[requirements-models.lock.txt](requirements-models.lock.txt) | CPU 模型依赖声明与锁文件；安装时同时遵守 SDK 锁约束 |
+| [model-env.example](model-env.example)、[校园RAG开发环境.code-workspace](校园RAG开发环境.code-workspace) | 无密钥模型参数参考与负责人本机 VS Code 工具路径配置 |
+| [SOURCES.md](SOURCES.md)、[原始手册 PDF](docs/校园级RAG知识库平台环境安装与首次运行手册.pdf) | 镜像与版本来源、最初安装参考；现行操作以仓库说明为准 |
+| [.gitignore](.gitignore) | 排除本目录的本机 `.env`、`.env.application`、日志和临时文件；这两份凭据不在公开仓库中分发 |
+
 ## 日常使用
 
 负责人可直接双击本目录的 `启动负责人环境.cmd`，启动七项完整基础服务和 Ollama API。打开图形界面使用桌面或开始菜单的 **Docker Desktop**，也可以双击本目录的 `启动Docker.cmd`。下列 PowerShell 命令均从仓库根目录 `D:\campus_RAG_work` 执行。
