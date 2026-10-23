@@ -6,6 +6,8 @@
 
 软件官网、阿里云安装包镜像、pip/npm/Maven 依赖源及其区别集中在指南第 24-26 节；下载地址仅作为备选来源，不会自动改变现有脚本使用的官方源或项目锁定版本。
 
+安装完成后使用[队员配置自检流程（第 27-31 节）](../docs/team/详细安装与配置指南.md#27-队员自检准备与完成判定)，核对工具与 SDK、Maven、容器认证、按需模型及本次报告时间，并填写验收记录。`Check-Environment.ps1` 的 `LISTENING` 只表示 TCP 可连接，`NOT RUNNING` 默认不导致脚本失败；服务须再用 `Test-Services.ps1`，模型须再用 `Test-Models.ps1` 验证。PowerShell 脚本看异常和完整结果，不用残留的 `$LASTEXITCODE` 判断整体成功。
+
 ## 使用前确认
 
 - 当前脚本面向 Windows PowerShell，Docker Desktop 使用 WSL2 后端和 Linux 容器。凭据初始化使用 Windows 文件权限，CPU 模型安装固定 Python 3.11、Windows x64 的 PyTorch 包；其他系统需另行适配。
