@@ -6,6 +6,8 @@
 
 本说明与 2026-10-23 的实际文件结构一致。基础服务和模型曾在负责人电脑上验证，成员仍需准备各自环境；不能将目录或环境检查通过视为业务功能已经完成。
 
+需要逐步安装说明时，下载 **[详细安装与配置指南 PDF](output/pdf/校园RAG平台_详细安装与配置指南.pdf)**；可编辑正文位于 [docs/team/详细安装与配置指南.md](docs/team/详细安装与配置指南.md)。指南包含真实仓库与本机路径、软件安装、Docker 适配、服务和模型验收，并区分当前可执行步骤与后续业务开发。
+
 ## 阅读与使用顺序
 
 | 使用场景 | 先看什么 | 下一步 |
@@ -47,6 +49,7 @@ campus-rag-platform/
 │   ├── api/                       接口契约
 │   └── architecture/              架构决策
 ├── environment/                   环境脚本、启动入口、依赖锁与参考手册
+├── output/pdf/                    项目详细安装与配置指南 PDF
 ├── pom.xml                        Java 17 聚合构建入口
 ├── README.md                      项目首页与文件索引
 ├── .editorconfig                  编辑器缩进、编码与换行约定
@@ -72,6 +75,7 @@ campus-rag-platform/
 | [tests/](tests/README.md) | `integration/` 跨模块验证、`e2e/` 端到端验证、`fixtures/` 可公开的构造材料 | 预留目录，尚无业务测试框架或用例 |
 | [docs/](docs/README.md) | 团队接入、开发规范、接口与架构资料 | 已有团队与目录说明，业务接口和设计待落实 |
 | [environment/](environment/README.md) | 开发中间件 Compose、依赖锁、初始化、工具与模型脚本、Windows 启动入口、原始 PDF | 已有负责人本机配置；其他电脑运行前需适配路径和 Docker 配置 |
+| [output/pdf/](output/pdf/校园RAG平台_详细安装与配置指南.pdf) | 可分发的详细安装指南；可编辑正文在 `docs/team/` | 已结合原手册与当前仓库修订，不含真实凭据 |
 
 `environment/` 管开发环境，`deploy/` 管业务部署。模块自身测试跟随模块；跨模块测试集中在根 `tests/`。环境和模型检查使用 `environment/` 的现有脚本。
 
