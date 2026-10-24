@@ -5,13 +5,16 @@ $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'Enter-DevEnvironment.ps1') -Quiet
 $workspaceRoot = Split-Path -Parent $PSScriptRoot
 $python = Join-Path $workspaceRoot '.venv\Scripts\python.exe'
+$pythonVersion = (Get-Content -LiteralPath (Join-Path $workspaceRoot '.python-version') -Raw).Trim()
+if (-not (Test-Path -LiteralPath $python)) { throw "Create the workspace Python $pythonVersion 64-bit virtual environment first." }
+$pythonInfo = & $python -c 'import platform, struct, sys; print(platform.python_version(), struct.calcsize(chr(80)) * 8); sys.exit(platform.python_version() != sys.argv[1] or struct.calcsize(chr(80)) != 8)' $pythonVersion
+if ($LASTEXITCODE -ne 0) { throw "Use the workspace Python $pythonVersion 64-bit virtual environment. Found: $pythonInfo" }
 $wheelDirectory = Join-Path $workspaceRoot '.local\model-wheels'
 $wheel = Join-Path $wheelDirectory 'torch-2.14.1+cpu-cp311-cp311-win_amd64.whl'
 $expectedHash = 'D14B0C8A66345B7BA43ADFA86FC20D89087A0A92E440004755D49D2468DDC6E0'
 $env:PIP_CACHE_DIR = Join-Path $workspaceRoot '.local\pip-cache'
 $sdkLock = Join-Path $PSScriptRoot 'requirements-rag.lock.txt'
 $modelLock = Join-Path $PSScriptRoot 'requirements-models.lock.txt'
-if (-not (Test-Path -LiteralPath $python)) { throw 'The project Python 3.11 virtual environment is missing.' }
 if (-not (Test-Path -LiteralPath $modelLock)) { throw 'The model dependency lock file is missing.' }
 New-Item -ItemType Directory -Path $wheelDirectory -Force | Out-Null
 $savedHttpsProxy = $env:HTTPS_PROXY

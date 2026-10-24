@@ -4,7 +4,10 @@ param([switch]$Resolve)
 $ErrorActionPreference = 'Stop'
 $workspaceRoot = Split-Path -Parent $PSScriptRoot
 $python = Join-Path $workspaceRoot '.venv\Scripts\python.exe'
-if (-not (Test-Path -LiteralPath $python)) { throw 'Create the workspace Python 3.11 virtual environment first.' }
+$pythonVersion = (Get-Content -LiteralPath (Join-Path $workspaceRoot '.python-version') -Raw).Trim()
+if (-not (Test-Path -LiteralPath $python)) { throw "Create the workspace Python $pythonVersion 64-bit virtual environment first." }
+$pythonInfo = & $python -c 'import platform, struct, sys; print(platform.python_version(), struct.calcsize(chr(80)) * 8); sys.exit(platform.python_version() != sys.argv[1] or struct.calcsize(chr(80)) != 8)' $pythonVersion
+if ($LASTEXITCODE -ne 0) { throw "Use the workspace Python $pythonVersion 64-bit virtual environment. Found: $pythonInfo" }
 $lock = Join-Path $PSScriptRoot 'requirements-rag.lock.txt'
 $requirements = if ($Resolve -or -not (Test-Path -LiteralPath $lock)) {
     Join-Path $PSScriptRoot 'requirements-rag.in'

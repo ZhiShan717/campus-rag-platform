@@ -14,20 +14,35 @@
 
 ## 使用前确认
 
-- 当前脚本面向 Windows PowerShell，Docker Desktop 使用 WSL2 后端和 Linux 容器。凭据初始化使用 Windows 文件权限，CPU 模型安装固定 Python 3.11、Windows x64 的 PyTorch 包；其他系统需另行适配。
-- 先安装 Java 17、Maven 3.9、Python 3.11、Git、Docker Desktop；Node.js 按后续前端依赖要求配置，需要本地生成模型时安装 Ollama。工具本身不随仓库分发。
+- 当前脚本面向 Windows PowerShell，Docker Desktop 使用 WSL2 后端和 Linux 容器。凭据初始化使用 Windows 文件权限，Python 固定为 **3.11.9 64 位**（版本来源为根目录 [`.python-version`](../.python-version)），CPU 模型安装使用 Windows x64 的 PyTorch 包；其他系统需另行适配。
+- 先安装 Java 17、Maven 3.9、Python 3.11.9（64 位）、Git、Docker Desktop；Node.js 按后续前端依赖要求配置，需要本地生成模型时安装 Ollama。工具本身不随仓库分发。
 - [Enter-DevEnvironment.ps1](Enter-DevEnvironment.ps1) 含已有机器的 Java、Maven 等工具路径；[Start-ContainerEngine.ps1](Start-ContainerEngine.ps1)、[Initialize-ContainerClient.ps1](Initialize-ContainerClient.ps1) 与 [Common.ps1](Common.ps1) 使用工作区独立 Docker 配置和 `desktop-linux` 上下文。队员需按自己的安装位置、Docker 上下文及数据目录核对和适配后再执行；这些入口目前不保证跨机器直接运行。
 - `Start-ContainerEngine.ps1` 会使用 `.local/docker-profile/` 的独立配置，并设置该配置的数据目录。已有 Docker 环境应先核对数据盘和配置，避免切换到其他数据目录后误以为原容器丢失。
 - 下列命令从仓库根目录执行。个人登录辅助、负责人启动入口和编辑器工作区配置只在本机保留，不随 Git 分发。
 
 ## 首次准备与日常操作
 
-完成上述路径适配后，在 Python 3.11 终端创建项目虚拟环境并安装 SDK：
+完成上述路径适配后，重新打开普通终端，确认默认 Python、启动器和 pip 均指向 Python 3.11.9；修改 PATH 后已打开的终端需重开：
+
+```powershell
+python --version
+py --version
+python -c 'import sys, struct; print(sys.executable); print(struct.calcsize(chr(80)) * 8)'
+py -c 'import sys; print(sys.executable)'
+python -m pip --version
+pip --version
+```
+
+两条版本命令应输出 `Python 3.11.9`，位数应为 `64`；普通终端中 `python` 与 `py` 应指向同一安装位置，`pip` 与 `python -m pip` 也应来自该安装。若命令不一致，先核对用户 PATH、Python 启动器的默认版本和 Windows 应用执行别名，再创建虚拟环境。`.python-version` 用于声明和校验版本，不会自动安装 Python 或修改系统 PATH。
+
+在确认后的 Python 3.11.9 终端创建项目虚拟环境并安装 SDK：
 
 ```powershell
 python -m venv .venv
 .\environment\Install-PythonDependencies.ps1
 ```
+
+开发终端会优先使用仓库的 `.venv\Scripts\python.exe`；激活后 `python`、`pip` 应来自 `.venv`，`py` 也应遵循激活的虚拟环境。两个依赖安装脚本会在安装或下载前校验 `.venv` 必须为 Python 3.11.9 64 位；已有其他版本的虚拟环境需先按锁文件重建。
 
 初始化本机凭据，再启动五项基础服务：
 

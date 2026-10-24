@@ -6,6 +6,7 @@ import importlib
 import importlib.metadata
 import json
 import os
+import struct
 import sys
 from pathlib import Path
 
@@ -13,9 +14,15 @@ from pathlib import Path
 def main() -> None:
     os.environ["LANGSMITH_TRACING"] = "false"
     os.environ["LANGCHAIN_TRACING_V2"] = "false"
-    expected_venv = Path(__file__).resolve().parent.parent / ".venv"
-    if sys.version_info[:2] != (3, 11) or Path(sys.prefix).resolve() != expected_venv:
-        raise RuntimeError("Use the workspace Python 3.11 virtual environment.")
+    workspace_root = Path(__file__).resolve().parent.parent
+    expected_version = (workspace_root / ".python-version").read_text(encoding="utf-8").strip()
+    expected_venv = workspace_root / ".venv"
+    if (
+        sys.version_info[:3] != tuple(int(part) for part in expected_version.split("."))
+        or struct.calcsize("P") != 8
+        or Path(sys.prefix).resolve() != expected_venv
+    ):
+        raise RuntimeError(f"Use the workspace Python {expected_version} 64-bit virtual environment.")
 
     packages = {
         "fastapi": "fastapi",

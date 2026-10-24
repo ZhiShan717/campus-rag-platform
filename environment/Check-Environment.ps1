@@ -38,7 +38,8 @@ function Test-CampusVersion {
 Test-CampusVersion 'Java' 'java' @('-version') 'version "17\.'
 Test-CampusVersion 'Javac' 'javac' @('-version') 'javac 17\.'
 Test-CampusVersion 'Maven' 'mvn.cmd' @('-version') 'Apache Maven 3\.([9]|[1-9][0-9])\.'
-Test-CampusVersion 'Python' 'python' @('--version') 'Python 3\.11\.'
+$pythonVersion = (Get-Content -LiteralPath (Join-Path (Split-Path -Parent $PSScriptRoot) '.python-version') -Raw).Trim()
+Test-CampusVersion 'Python' 'python' @('--version') ('^Python ' + [regex]::Escape($pythonVersion) + '$')
 Test-CampusVersion 'pip' 'python' @('-m', 'pip', '--version') '\(python 3\.11\)'
 Test-CampusVersion 'Node.js' 'node' @('--version') '^v(1[89]|[2-9][0-9])\.'
 Test-CampusVersion 'npm' 'npm.cmd' @('--version') '^\d+\.'
