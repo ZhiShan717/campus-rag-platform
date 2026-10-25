@@ -7,7 +7,8 @@
 ```text
 seeds/
 ├── README.md                      本说明
-├── demo-policies/                 演示制度数据集（JSON，供导入脚本与测试共用）
+├── demo-policies.sql              由 JSON 生成的可导入脚本（勿手改）
+├── demo-policies/                 演示制度数据集（JSON，唯一事实来源）
 │   ├── _index.json                汇总清单：文档、版本、状态、条款数
 │   ├── d001-national-scholarship.json
 │   ├── d002-national-inspiration.json
@@ -18,7 +19,8 @@ seeds/
 │   ├── d007-student-loan.json
 │   └── d008-temporary-aid.json
 └── tools/
-    └── validate_seed_data.py      数据自检脚本（结构、状态、日期、编号唯一性）
+    ├── validate_seed_data.py      数据自检脚本（结构、状态、日期、编号唯一性）
+    └── export_seed_sql.py         从 JSON 生成 demo-policies.sql
 ```
 
 ## 数据规模
@@ -42,10 +44,23 @@ seeds/
 
 ## 导入约定
 
-- JSON 是唯一事实来源；MySQL 导入脚本由单成宇按此结构生成 `INSERT`，Java 实体字段与 `制度数据字段表` 对齐。
+- JSON 是唯一事实来源；`demo-policies.sql` 由 `tools/export_seed_sql.py` 生成，不要手改，改数据后重新生成一次。
 - 导入顺序：`documents` → `document_versions` → `chunks`（外键自顶向下）。
 - 重复导入应可重跑：脚本按 `id` 先删后插，或使用 `INSERT ... ON DUPLICATE KEY UPDATE`；不要依赖自增主键。
+- 建表语句由数据库负责人按字段表维护；本目录只提供数据，不含 DDL。
 - 本目录不含任何数据库凭据；连接参数由本机 `environment/.env` 提供。
+
+### 两种导入方式
+
+```powershell
+# 方式一：直接用生成的 SQL（需三张表已建好）
+mysql -h 127.0.0.1 -P 13306 -u campus_dev -p campus_rag < .\project\database\mysql\seeds\demo-policies.sql
+
+# 方式二：改完 JSON 后重新生成 SQL，再导入
+.\.venv\Scripts\python.exe .\project\database\mysql\seeds\tools\export_seed_sql.py
+```
+
+Java 侧若要自己读 JSON 入库，字段与顺序以 `demo-policies.sql` 为准，两边结果必须一致。
 
 ## 自检
 
