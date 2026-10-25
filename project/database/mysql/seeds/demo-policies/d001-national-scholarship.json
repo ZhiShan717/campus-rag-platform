@@ -1,0 +1,120 @@
+{
+  "document": {
+    "id": "d001",
+    "title": "国家奖学金评审办法",
+    "doc_no": "〔演示〕学字2024-12号",
+    "issuer": "学生工作处",
+    "category": "NATIONAL_SCHOLARSHIP",
+    "source_type": "FAKE_DEMO",
+    "source_note": "虚构演示数据，依据公开政策精神改写，不对应任何真实校发文件",
+    "created_at": "2026-10-24T10:00:00+08:00"
+  },
+  "versions": [
+    {
+      "id": "v001",
+      "document_id": "d001",
+      "version_no": "2021版",
+      "status": "SUPERSEDED",
+      "effective_date": "2021-09-01",
+      "expiry_date": "2024-08-31",
+      "replaced_by": "v002",
+      "published_date": "2021-07-15",
+      "summary": "旧版：奖励标准 8000 元，学业成绩排名前 10%",
+      "chunks": [
+        {
+          "id": "c001",
+          "version_id": "v001",
+          "clause_no": "第一条",
+          "section_path": "第一章 总则",
+          "order_no": 1,
+          "content": "为激励学生勤奋学习、全面发展，学校设立国家奖学金，用于奖励特别优秀的全日制在校本科生。"
+        },
+        {
+          "id": "c002",
+          "version_id": "v001",
+          "clause_no": "第二条",
+          "section_path": "第二章 奖励标准",
+          "order_no": 2,
+          "content": "国家奖学金每人每年 8000 元，一次性发放至学生本人银行卡。"
+        },
+        {
+          "id": "c003",
+          "version_id": "v001",
+          "clause_no": "第三条",
+          "section_path": "第三章 申请条件",
+          "order_no": 3,
+          "content": "申请国家奖学金的学生，上一学年学业成绩排名须在本专业前 10%。"
+        },
+        {
+          "id": "c004",
+          "version_id": "v001",
+          "clause_no": "第四条",
+          "section_path": "第三章 申请条件",
+          "order_no": 4,
+          "content": "申请学生须无不及格课程，且在校期间未受过纪律处分。"
+        },
+        {
+          "id": "c005",
+          "version_id": "v001",
+          "clause_no": "第五条",
+          "section_path": "第四章 评审程序",
+          "order_no": 5,
+          "content": "学院初评后报学校评审委员会审定，评审结果在全校范围内公示 5 个工作日。"
+        }
+      ]
+    },
+    {
+      "id": "v002",
+      "document_id": "d001",
+      "version_no": "2024版",
+      "status": "ACTIVE",
+      "effective_date": "2024-09-01",
+      "expiry_date": null,
+      "replaced_by": null,
+      "published_date": "2024-07-20",
+      "summary": "2024 修订：奖励标准提高到 10000 元，成绩门槛收紧至前 5%",
+      "chunks": [
+        {
+          "id": "c006",
+          "version_id": "v002",
+          "clause_no": "第一条",
+          "section_path": "第一章 总则",
+          "order_no": 1,
+          "content": "为激励学生勤奋学习、全面发展，学校设立国家奖学金，用于奖励特别优秀的全日制在校本科生，评审工作坚持公开、公平、公正原则。"
+        },
+        {
+          "id": "c007",
+          "version_id": "v002",
+          "clause_no": "第二条",
+          "section_path": "第二章 奖励标准",
+          "order_no": 2,
+          "content": "国家奖学金每人每年 10000 元，一次性发放至学生本人银行卡。"
+        },
+        {
+          "id": "c008",
+          "version_id": "v002",
+          "clause_no": "第三条",
+          "section_path": "第三章 申请条件",
+          "order_no": 3,
+          "content": "申请国家奖学金的学生，上一学年学业成绩排名须在本专业前 5%，综合素质考评排名须在本专业前 10%。"
+        },
+        {
+          "id": "c009",
+          "version_id": "v002",
+          "clause_no": "第四条",
+          "section_path": "第三章 申请条件",
+          "order_no": 4,
+          "content": "申请学生须无不及格课程、未受过纪律处分，且同一学年未获得其他同级奖学金。"
+        },
+        {
+          "id": "c010",
+          "version_id": "v002",
+          "clause_no": "第五条",
+          "section_path": "第四章 评审程序",
+          "order_no": 5,
+          "content": "学院初评后报学校评审委员会审定，评审结果在全校范围内公示 5 个工作日，公示无异议后报上级主管部门备案。"
+        }
+      ]
+    }
+  ]
+}

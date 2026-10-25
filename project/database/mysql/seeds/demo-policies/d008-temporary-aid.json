@@ -1,0 +1,51 @@
+{
+  "document": {
+    "id": "d008",
+    "title": "校级临时困难补助办法",
+    "doc_no": "〔演示〕学字2024-20号",
+    "issuer": "学生工作处",
+    "category": "NEED_ASSESSMENT",
+    "source_type": "FAKE_DEMO",
+    "source_note": "虚构演示数据，不对应任何真实校发文件",
+    "created_at": "2026-10-24T10:35:00+08:00"
+  },
+  "versions": [
+    {
+      "id": "v010",
+      "document_id": "d008",
+      "version_no": "2024版",
+      "status": "ACTIVE",
+      "effective_date": "2024-09-01",
+      "expiry_date": null,
+      "replaced_by": null,
+      "published_date": "2024-08-01",
+      "summary": "现行版本",
+      "chunks": [
+        {
+          "id": "c041",
+          "version_id": "v010",
+          "clause_no": "第一条",
+          "section_path": "一、适用情形",
+          "order_no": 1,
+          "content": "学生本人或家庭遭遇突发变故、重大疾病等导致经济困难的，可申请校级临时困难补助。"
+        },
+        {
+          "id": "c042",
+          "version_id": "v010",
+          "clause_no": "第二条",
+          "section_path": "二、补助标准",
+          "order_no": 2,
+          "content": "临时困难补助为一次性发放，金额在 1000 元至 5000 元之间，由评审小组按实际情况确定。"
+        },
+        {
+          "id": "c043",
+          "version_id": "v010",
+          "clause_no": "第三条",
+          "section_path": "三、申请程序",
+          "order_no": 3,
+          "content": "学生本人提出申请，学院核实情况后报学生工作处审批，审批通过后 10 个工作日内发放。"
+        }
+      ]
+    }
+  ]
+}

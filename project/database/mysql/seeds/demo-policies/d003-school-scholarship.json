@@ -1,0 +1,59 @@
+{
+  "document": {
+    "id": "d003",
+    "title": "校级优秀学生奖学金评定办法",
+    "doc_no": "〔演示〕校字2022-03号",
+    "issuer": "学校奖学金评审委员会",
+    "category": "SCHOOL_SCHOLARSHIP",
+    "source_type": "FAKE_DEMO",
+    "source_note": "虚构演示数据，不对应任何真实校发文件",
+    "created_at": "2026-10-24T10:10:00+08:00"
+  },
+  "versions": [
+    {
+      "id": "v004",
+      "document_id": "d003",
+      "version_no": "2022版",
+      "status": "ACTIVE",
+      "effective_date": "2022-03-01",
+      "expiry_date": null,
+      "replaced_by": null,
+      "published_date": "2021-12-20",
+      "summary": "现行版本",
+      "chunks": [
+        {
+          "id": "c016",
+          "version_id": "v004",
+          "clause_no": "第一条",
+          "section_path": "一、奖项设置",
+          "order_no": 1,
+          "content": "学校设立校级优秀学生奖学金，分为一等奖、二等奖、三等奖三个等级，每学年评定一次。"
+        },
+        {
+          "id": "c017",
+          "version_id": "v004",
+          "clause_no": "第二条",
+          "section_path": "二、奖励标准",
+          "order_no": 2,
+          "content": "一等奖 3000 元，二等奖 2000 元，三等奖 1000 元，同一学年不重复发放。"
+        },
+        {
+          "id": "c018",
+          "version_id": "v004",
+          "clause_no": "第三条",
+          "section_path": "三、申请条件",
+          "order_no": 3,
+          "content": "申请学生上一学年综合测评排名须在本班级前 20%，且无不及格课程。"
+        },
+        {
+          "id": "c019",
+          "version_id": "v004",
+          "clause_no": "第四条",
+          "section_path": "四、评定程序",
+          "order_no": 4,
+          "content": "班级评议小组初评，学院审核后报学生工作处备案，评定结果在学院范围内公示 3 个工作日。"
+        }
+      ]
+    }
+  ]
+}

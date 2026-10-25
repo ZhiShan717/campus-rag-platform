@@ -1,0 +1,81 @@
+{
+  "dataset": "campus-rag-demo-qa",
+  "version": "1.0",
+  "updated_at": "2026-10-25",
+  "subject": "奖助学金制度查询 · 首轮 8 题",
+  "judging": "命中集合须包含全部 expected_chunk_ids，且与 excluded_chunk_ids 无交集；NO_EVIDENCE 类必须返回空结果并标注无依据，不得报网络错误。",
+  "cases": [
+    {
+      "id": "q01",
+      "type": "NORMAL",
+      "question": "国家奖学金的申请条件是什么？",
+      "expected_chunk_ids": ["c008", "c009"],
+      "excluded_chunk_ids": ["c003", "c004"],
+      "expected_mode": "CLAUSE_RETRIEVAL",
+      "note": "必须命中 2024 版条件条款（前 5% + 无不及格），不得命中 2021 版的前 10% 条款。"
+    },
+    {
+      "id": "q02",
+      "type": "NORMAL",
+      "question": "国家励志奖学金的金额是多少，需要满足什么条件？",
+      "expected_chunk_ids": ["c012", "c013"],
+      "excluded_chunk_ids": [],
+      "expected_mode": "CLAUSE_RETRIEVAL",
+      "note": "金额 5000 元与困难认定 + 前 30% 两条需同时命中，单命中一条视为部分通过。"
+    },
+    {
+      "id": "q03",
+      "type": "VERSION",
+      "question": "国家奖学金对学业成绩排名有什么要求？",
+      "expected_chunk_ids": ["c008"],
+      "excluded_chunk_ids": ["c003"],
+      "expected_mode": "CLAUSE_RETRIEVAL",
+      "note": "典型新旧版差异题：新版要求前 5%，旧版前 10%。命中旧版即判错。"
+    },
+    {
+      "id": "q04",
+      "type": "VERSION",
+      "question": "生源地助学贷款每人每年最高能贷多少？",
+      "expected_chunk_ids": ["c038"],
+      "excluded_chunk_ids": ["c034"],
+      "expected_mode": "CLAUSE_RETRIEVAL",
+      "note": "新版 16000 元、旧版 12000 元。必须只出现新版数额。"
+    },
+    {
+      "id": "q05",
+      "type": "INVALID",
+      "question": "国家助学金一年发多少钱？",
+      "expected_chunk_ids": [],
+      "excluded_chunk_ids": ["c025", "c026", "c027", "c028"],
+      "expected_mode": "NO_EVIDENCE",
+      "note": "该办法已于 2025-08-31 废止且无替代版本，必须拒答，不能返回已废止条款。"
+    },
+    {
+      "id": "q06",
+      "type": "INVALID",
+      "question": "勤工助学岗位每小时多少钱？",
+      "expected_chunk_ids": [],
+      "excluded_chunk_ids": ["c029", "c030", "c031", "c032"],
+      "expected_mode": "NO_EVIDENCE",
+      "note": "该办法 2026-09-01 才生效，整理数据时属未生效，不得作为依据。"
+    },
+    {
+      "id": "q07",
+      "type": "NO_EVIDENCE",
+      "question": "校园网报修电话是多少？",
+      "expected_chunk_ids": [],
+      "excluded_chunk_ids": [],
+      "expected_mode": "NO_EVIDENCE",
+      "note": "超出奖助学金知识库范围，应提示无依据并说明当前知识库范围，不能编造号码。"
+    },
+    {
+      "id": "q08",
+      "type": "NO_EVIDENCE",
+      "question": "张同学上学期拿了多少助学金，银行卡号是多少？",
+      "expected_chunk_ids": [],
+      "excluded_chunk_ids": [],
+      "expected_mode": "NO_EVIDENCE",
+      "note": "涉及个人隐私与具体账户数据，知识库不含此类信息，须拒答且不检索个人数据。"
+    }
+  ]
+}
