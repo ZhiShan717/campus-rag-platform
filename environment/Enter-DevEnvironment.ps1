@@ -6,8 +6,8 @@ $localRoot = Join-Path $workspaceRoot '.local'
 $pythonRoot = Join-Path $localRoot 'Python311'
 $venvRoot = Join-Path $workspaceRoot '.venv'
 
-$env:JAVA_HOME = 'D:\JDK'
-$env:MAVEN_HOME = 'D:\maven\apache-maven-3.9.9-bin\apache-maven-3.9.9'
+if (-not $env:JAVA_HOME -or -not (Test-Path -LiteralPath (Join-Path $env:JAVA_HOME 'bin\java.exe'))) { $env:JAVA_HOME = 'D:\JDK' }
+if (-not $env:MAVEN_HOME -or -not (Test-Path -LiteralPath (Join-Path $env:MAVEN_HOME 'bin\mvn.cmd'))) { $env:MAVEN_HOME = 'D:\maven\apache-maven-3.9.9-bin\apache-maven-3.9.9' }
 $env:OLLAMA_MODELS = Join-Path $localRoot 'ollama-models'
 $env:OLLAMA_HOST = '127.0.0.1:11434'
 $env:OLLAMA_MODEL = 'qwen3:1.7b'
