@@ -45,7 +45,7 @@ INSERT INTO `chunks` (`id`, `version_id`, `clause_no`, `section_path`, `order_no
 INSERT INTO `chunks` (`id`, `version_id`, `clause_no`, `section_path`, `order_no`, `content`) VALUES ('c009', 'v002', '第四条', '第三章 申请条件', 4, '申请学生须无不及格课程、未受过纪律处分，且同一学年未获得其他同级奖学金。');
 INSERT INTO `chunks` (`id`, `version_id`, `clause_no`, `section_path`, `order_no`, `content`) VALUES ('c010', 'v002', '第五条', '第四章 评审程序', 5, '学院初评后报学校评审委员会审定，评审结果在全校范围内公示 5 个工作日，公示无异议后报上级主管部门备案。');
 INSERT INTO `chunks` (`id`, `version_id`, `clause_no`, `section_path`, `order_no`, `content`) VALUES ('c011', 'v003', '第一条', '第一章 总则', 1, '为资助家庭经济困难且品学兼优的全日制本科生，学校设立国家励志奖学金。');
-INSERT INTO `chunks` (`id`, `version_id`, `clause_no`, `section_path`, `order_no`, `content`) VALUES ('c012', 'v003', '第二条', '第二章 奖励标准', 2, '国家励志奖学金每人每年 5000 元，按学年一次性发放。');
+INSERT INTO `chunks` (`id`, `version_id`, `clause_no`, `section_path`, `order_no`, `content`) VALUES ('c012', 'v003', '第二条', '第二章 奖励标准', 2, '国家励志奖学金的奖励金额为每人每年 5000 元，按学年一次性发放。');
 INSERT INTO `chunks` (`id`, `version_id`, `clause_no`, `section_path`, `order_no`, `content`) VALUES ('c013', 'v003', '第三条', '第三章 申请条件', 3, '申请学生须已通过家庭经济困难认定，且上一学年学业成绩排名在本专业前 30%。');
 INSERT INTO `chunks` (`id`, `version_id`, `clause_no`, `section_path`, `order_no`, `content`) VALUES ('c014', 'v003', '第四条', '第三章 申请条件', 4, '同一学年内，国家励志奖学金与国家奖学金不可同时获得，学生只能选择其中一项申报。');
 INSERT INTO `chunks` (`id`, `version_id`, `clause_no`, `section_path`, `order_no`, `content`) VALUES ('c015', 'v003', '第五条', '第四章 评审程序', 5, '学生本人申请，学院审核并公示 3 个工作日后报学生工作处，全校公示 5 个工作日。');
