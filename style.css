@@ -1,0 +1,246 @@
+/* ===========================================================
+   陈奥文 · 10.24 登录 / 注册静态页样式
+   对应计划：阶段1 · 3.2 表单标签与常用控件 / 5.4 Flex 弹性布局
+   说明：纯 CSS，不依赖任何框架；所有布局用 Flex 实现。
+   =========================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* 盒子模型：宽高包含 padding 和 border */
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f6fa;
+  color: #1c2d43;
+  font: 15px/1.7 "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+}
+
+/* ---------- 卡片 ---------- */
+.auth-card {
+  width: 420px;
+  max-width: calc(100vw - 32px);
+  background: #fff;
+  border: 1px solid #dbe4ee;
+  border-radius: 14px;
+  box-shadow: 0 10px 32px rgba(23, 57, 84, 0.08);
+  padding: 36px 34px 30px;
+}
+
+.auth-head {
+  margin-bottom: 26px;
+}
+
+.auth-head .eyebrow {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #7b8ea3;
+}
+
+.auth-head h1 {
+  margin-top: 6px;
+  font-size: 22px;
+  line-height: 1.5;
+  color: #1d4d76;
+}
+
+.auth-head p {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #617184;
+}
+
+/* ---------- 表单行：label 与 input 左右排布 ---------- */
+.form-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.form-row > label {
+  width: 84px;
+  flex-shrink: 0; /* 关键：禁止标签被压缩 */
+  padding-top: 10px;
+  font-size: 14px;
+  color: #48596b;
+  text-align: right;
+}
+
+.form-row .field {
+  flex: 1; /* 输入框吃掉剩余宽度 */
+  min-width: 0;
+}
+
+.form-row input[type="text"],
+.form-row input[type="password"],
+.form-row input[type="email"] {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  font: inherit;
+  color: #1c2d43;
+  background: #fbfcfe;
+  border: 1px solid #d5dfea;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-row input:focus {
+  border-color: #245784;
+  box-shadow: 0 0 0 3px rgba(36, 87, 132, 0.12);
+}
+
+.form-row input::placeholder {
+  color: #a9b7c6;
+}
+
+/* ---------- 校验错误 ---------- */
+.field-error {
+  display: block;
+  min-height: 18px;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #c0392b;
+}
+
+/* 输入框出错时的红框（用类名选择器控制，方便 Toggle） */
+input.is-invalid {
+  border-color: #c0392b !important;
+  background: #fff7f6;
+}
+
+/* ---------- 协议勾选 ---------- */
+.form-row.agree {
+  align-items: center;
+}
+
+.form-row.agree > label {
+  width: auto;
+  padding-top: 0;
+  text-align: left;
+  font-size: 13px;
+  color: #617184;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+}
+
+.form-row.agree input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: #245784;
+  cursor: pointer;
+}
+
+/* ---------- 全局提示条 ---------- */
+.alert {
+  display: none; /* 默认隐藏，有错误时加 .is-show */
+  margin-bottom: 18px;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  border-radius: 8px;
+  border-left: 3px solid transparent;
+}
+
+.alert.is-show {
+  display: block;
+}
+
+.alert.is-error {
+  color: #8c2f24;
+  background: #fdf1ee;
+  border-left-color: #d9534f;
+}
+
+.alert.is-ok {
+  color: #1f6b3d;
+  background: #eef8f1;
+  border-left-color: #3aa76d;
+}
+
+/* ---------- 按钮 ---------- */
+.btn-submit {
+  width: 100%;
+  height: 44px;
+  margin-top: 6px;
+  font: inherit;
+  font-size: 15px;
+  color: #fff;
+  background: #245784;
+  border: 0;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.05s;
+}
+
+.btn-submit:hover {
+  background: #1d4d76;
+}
+
+.btn-submit:active {
+  transform: translateY(1px);
+}
+
+.btn-submit:disabled {
+  background: #a9bccd;
+  cursor: not-allowed;
+}
+
+/* ---------- 底部长链接 ---------- */
+.auth-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #eef3f8;
+  font-size: 13px;
+  color: #617184;
+}
+
+.auth-foot a {
+  color: #245784;
+  text-decoration: none;
+}
+
+.auth-foot a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- 演示提示（静态阶段专用，接接口后删掉） ---------- */
+.static-note {
+  margin-top: 18px;
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #80602c;
+  background: #fff9eb;
+  border-left: 3px solid #b98d35;
+  border-radius: 6px;
+}
+
+/* ---------- 窄屏 ---------- */
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 26px 20px 22px;
+  }
+
+  .form-row {
+    display: block; /* 手机上标签和输入框上下排 */
+  }
+
+  .form-row > label {
+    width: auto;
+    display: block;
+    padding: 0 0 6px;
+    text-align: left;
+  }
+}
