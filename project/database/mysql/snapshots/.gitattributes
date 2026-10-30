@@ -1,0 +1,2 @@
+# Preserve mysqldump bytes so the recorded SHA256 survives clone and checkout.
+*.sql -text whitespace=-blank-at-eof

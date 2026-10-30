@@ -26,6 +26,7 @@ project/docs/
 
 | 要做的事 | 资料 |
 | --- | --- |
+| 接入第一周数据库模块 | [数据库使用说明](../../README.database-week1.md)、[字段字典](database/字段字典.md)、[Java 接入](database/Java接入说明.md)、[验收报告](database/第一周验收报告.md) |
 | 首次给队员发项目信息 | [team/队员信息速查](team/队员信息速查.md)：仓库、加入事项、服务连接与协作摘要 |
 | 按步骤安装配置、检查是否完成，或下载离线指南 | [环境区详细指南 PDF](../../environment/output/pdf/校园RAG平台_详细安装与配置指南.pdf) / [可编辑正文](../../environment/docs/详细安装与配置指南.md) |
 | 准备队员电脑、克隆和提交代码 | [team/团队协作与接入](team/团队协作与接入.md)：完整准备流程、权限与 Fork/PR 操作 |

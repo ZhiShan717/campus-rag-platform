@@ -1,13 +1,14 @@
 # 校园 RAG 知识库平台
 
-公开仓库：[ZhiShan717/campus-rag-platform](https://github.com/ZhiShan717/campus-rag-platform)，默认分支 `main`。读取和克隆无需邀请，向原仓库推送需要写入权限。
+公开仓库：[szzz305/campus-rag-platform](https://github.com/szzz305/campus-rag-platform)，默认分支 `main`。读取和克隆无需邀请，推送需要写入权限。
 
-本仓库分为两个区域：**[project/](project/README.md) 保存业务项目，[environment/](environment/README.md) 保存开发环境配置与安装资料**。当前仍为工程骨架：六个 Java 模块已有聚合 POM，Python 与前端已有目录规划，业务网站、API 和完整问答链路尚未实现。
+本仓库分为两个区域：**[project/](project/README.md) 保存业务项目，[environment/](environment/README.md) 保存开发环境配置与安装资料**。六个 Java 服务仍为工程骨架，Python 与前端已有目录规划；第一周数据库模块已提供三表结构、演示数据、SQL、Mapper 和恢复验证，见[数据库交付说明](README.database-week1.md)。业务网站、API 和完整问答链路尚未实现。
 
 ## 阅读入口
 
 | 要做的事 | 入口 |
 | --- | --- |
+| 查看第一周数据库成果、初始化与恢复 | [数据库交付说明](README.database-week1.md)、[字段字典](project/docs/database/字段字典.md)、[验收报告](project/docs/database/第一周验收报告.md) |
 | 新队员了解仓库、权限与加入步骤 | [队员信息速查](project/docs/team/队员信息速查.md)、[团队协作与接入](project/docs/team/团队协作与接入.md) |
 | 安装软件、配置服务和模型 | [环境操作说明](environment/README.md)、[详细安装指南正文](environment/docs/详细安装与配置指南.md) |
 | 下载或离线阅读手册 | [详细安装与配置指南 PDF](environment/output/pdf/校园RAG平台_详细安装与配置指南.pdf) |

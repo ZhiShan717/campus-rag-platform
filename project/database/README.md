@@ -5,9 +5,11 @@
 | 目录 | 用途 |
 | --- | --- |
 | `mysql/migrations/` | MySQL 版本化建表及表结构变更脚本 |
-| `mysql/seeds/` | 可重复导入的开发样例数据 |
+| `mysql/seeds/` | 面向空开发库的一次性演示初始化数据 |
+| `mysql/queries/` | 有效候选、CRUD、版本事务和完整性检查示例 |
+| `mysql/snapshots/` | 已验证可恢复的虚构演示数据库快照 |
 | `elasticsearch/index-templates/` | Elasticsearch mapping、索引模板与分析器配置 |
 
-当前只建立目录，尚无业务表或索引定义；没有执行数据库导入或变更。模型使用 `BAAI/bge-large-zh-v1.5`，后续向量字段维度统一为 **1024**。
+第一周数据库模块已提供 `users / documents / chunks` 三表迁移、约束、索引、演示数据、Mapper 和恢复脚本。使用说明及验证入口见仓库根目录 [README.database-week1.md](../../README.database-week1.md)，字段与规则见 [字段字典](../docs/database/字段字典.md)。数据均为虚构演示，不可作为真实校规依据；新增 SQL 文件不会自动运行。业务服务和团队接口仍需接入验证。
 
-MySQL 业务结构与 Java 实体、Python 检索字段确定后，再提交首份迁移。迁移工具和执行方式待团队统一；新增 SQL 文件不会自动运行。开发凭据由 [环境初始化脚本](../../environment/Initialize-Environment.ps1)在各成员本机生成，不能写入迁移脚本。
+在仓库根目录运行 `scripts/Test-Week1.ps1`，通过独立临时 MySQL 实例验证建表、CRUD、版本过滤和恢复；日常初始化与恢复使用 `scripts/Manage-Week1Database.ps1`。脚本拒绝复用已有数据库，避免覆盖数据。开发凭据由各成员本机管理，不能写入迁移脚本。原有环境初始化入口为 [环境初始化脚本](../../environment/Initialize-Environment.ps1)。
