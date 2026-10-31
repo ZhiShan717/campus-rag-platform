@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/campus_rag?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 你的密码
+  sql:
+    init:
+      # 真库的表要自己建好，别让程序每次启动都重建
+      mode: never
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+app:
+  jwt:
+    secret: campus-rag-demo-secret-key-change-me-in-production-2024
+    expire-minutes: 120
+  python:
+    base-url: http://127.0.0.1:8000
+    timeout-millis: 3000
+    mock: false

@@ -13,6 +13,7 @@
     <description>校园 RAG 平台 Java 服务目录骨架</description>
 
     <modules>
+        <module>backend/rag-app</module>
         <module>backend/gateway-service</module>
         <module>backend/auth-service</module>
         <module>backend/doc-service</module>

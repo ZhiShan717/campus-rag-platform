@@ -1,0 +1,43 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    # 本地演示用内存库：程序一停数据就没了，重启会重新执行 schema.sql / data.sql
+    # H2 的 MODE=MySQL 让它认识 MySQL 那套建表语法，方便以后换真库
+    url: jdbc:h2:mem:ragdemo;MODE=MySQL;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  sql:
+    init:
+      mode: always
+      # 关键一行：不写它，Windows 默认用 GBK 读 data.sql，中文入库全是乱码
+      encoding: UTF-8
+  jackson:
+    # 返回给前端的日期格式
+    date-format: yyyy-MM-dd
+    time-zone: Asia/Shanghai
+
+mybatis-plus:
+  configuration:
+    # 数据库 effective_date ←→ Java effectiveDate 自动对应
+    map-underscore-to-camel-case: true
+    # 把执行的 SQL 打到控制台，调试时最有用的一行
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+app:
+  jwt:
+    # HS256 要求密钥至少 32 字节，正式项目请换成环境变量
+    secret: campus-rag-demo-secret-key-change-me-in-production-2024
+    expire-minutes: 120
+  python:
+    # 张睿轩的检索服务地址
+    base-url: http://127.0.0.1:8000
+    timeout-millis: 3000
+    # true = Python 没起来时用假数据演示；联调时改成 false
+    mock: true
+
+logging:
+  level:
+    root: info
