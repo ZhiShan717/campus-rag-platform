@@ -1,0 +1,60 @@
+{
+  "document": {
+    "id": "d006",
+    "title": "勤工助学管理办法",
+    "doc_no": "〔演示〕学字2026-02号",
+    "issuer": "学生资助管理中心",
+    "category": "WORK_STUDY",
+    "source_type": "FAKE_DEMO",
+    "source_note": "虚构演示数据，用于演示「已发布未生效」的检索行为",
+    "created_at": "2026-10-24T10:25:00+08:00"
+  },
+  "versions": [
+    {
+      "id": "v007",
+      "document_id": "d006",
+      "version_no": "2026版",
+      "status": "PENDING",
+      "effective_date": "2027-03-01",
+      "expiry_date": null,
+      "replaced_by": null,
+      "published_date": "2026-12-20",
+      "summary": "2026 年 12 月发布，2027 年 3 月 1 日起施行，整理数据时尚未生效",
+      "chunks": [
+        {
+          "id": "c029",
+          "version_id": "v007",
+          "clause_no": "第一条",
+          "section_path": "第一章 总则",
+          "order_no": 1,
+          "content": "学校设置勤工助学岗位，帮助家庭经济困难学生通过劳动获得报酬，培养自立自强意识。"
+        },
+        {
+          "id": "c030",
+          "version_id": "v007",
+          "clause_no": "第二条",
+          "section_path": "第二章 岗位设置",
+          "order_no": 2,
+          "content": "勤工助学岗位包括校内助管、助教和实验室助理三类，由学生资助管理中心统一发布。"
+        },
+        {
+          "id": "c031",
+          "version_id": "v007",
+          "clause_no": "第三条",
+          "section_path": "第三章 报酬标准",
+          "order_no": 3,
+          "content": "勤工助学报酬每小时不低于 20 元，每名学生每月工作时间不超过 40 小时。"
+        },
+        {
+          "id": "c032",
+          "version_id": "v007",
+          "clause_no": "第四条",
+          "section_path": "第四章 岗位申请",
+          "order_no": 4,
+          "content": "已通过家庭经济困难认定的学生在岗位申请中优先录用。"
+        }
+      ]
+    }
+  ]
+}
+

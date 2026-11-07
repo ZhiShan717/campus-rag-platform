@@ -1,0 +1,67 @@
+{
+  "document": {
+    "id": "d002",
+    "title": "国家励志奖学金实施办法",
+    "doc_no": "〔演示〕学字2023-08号",
+    "issuer": "学生工作处",
+    "category": "NATIONAL_INSPIRATION",
+    "source_type": "FAKE_DEMO",
+    "source_note": "虚构演示数据，依据公开政策精神改写，不对应任何真实校发文件",
+    "created_at": "2026-10-24T10:05:00+08:00"
+  },
+  "versions": [
+    {
+      "id": "v003",
+      "document_id": "d002",
+      "version_no": "2023版",
+      "status": "ACTIVE",
+      "effective_date": "2023-09-01",
+      "expiry_date": null,
+      "replaced_by": null,
+      "published_date": "2023-07-10",
+      "summary": "现行版本",
+      "chunks": [
+        {
+          "id": "c011",
+          "version_id": "v003",
+          "clause_no": "第一条",
+          "section_path": "第一章 总则",
+          "order_no": 1,
+          "content": "为资助家庭经济困难且品学兼优的全日制本科生，学校设立国家励志奖学金。"
+        },
+        {
+          "id": "c012",
+          "version_id": "v003",
+          "clause_no": "第二条",
+          "section_path": "第二章 奖励标准",
+          "order_no": 2,
+          "content": "国家励志奖学金的奖励金额为每人每年 5000 元，按学年一次性发放。"
+        },
+        {
+          "id": "c013",
+          "version_id": "v003",
+          "clause_no": "第三条",
+          "section_path": "第三章 申请条件",
+          "order_no": 3,
+          "content": "申请学生须已通过家庭经济困难认定，且上一学年学业成绩排名在本专业前 30%。"
+        },
+        {
+          "id": "c014",
+          "version_id": "v003",
+          "clause_no": "第四条",
+          "section_path": "第三章 申请条件",
+          "order_no": 4,
+          "content": "同一学年内，国家励志奖学金与国家奖学金不可同时获得，学生只能选择其中一项申报。"
+        },
+        {
+          "id": "c015",
+          "version_id": "v003",
+          "clause_no": "第五条",
+          "section_path": "第四章 评审程序",
+          "order_no": 5,
+          "content": "学生本人申请，学院审核并公示 3 个工作日后报学生工作处，全校公示 5 个工作日。"
+        }
+      ]
+    }
+  ]
+}

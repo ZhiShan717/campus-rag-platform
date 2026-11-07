@@ -1,0 +1,104 @@
+{
+  "document": {
+    "id": "d007",
+    "title": "生源地信用助学贷款实施细则",
+    "doc_no": "〔演示〕学字2025-06号",
+    "issuer": "学生资助管理中心",
+    "category": "STUDENT_LOAN",
+    "source_type": "FAKE_DEMO",
+    "source_note": "虚构演示数据，用于演示「新版替代旧版」的额度变化",
+    "created_at": "2026-10-24T10:30:00+08:00"
+  },
+  "versions": [
+    {
+      "id": "v008",
+      "document_id": "d007",
+      "version_no": "2020版",
+      "status": "SUPERSEDED",
+      "effective_date": "2020-09-01",
+      "expiry_date": "2025-08-31",
+      "replaced_by": "v009",
+      "published_date": "2020-07-01",
+      "summary": "旧版：每年最高贷款 12000 元",
+      "chunks": [
+        {
+          "id": "c033",
+          "version_id": "v008",
+          "clause_no": "第一条",
+          "section_path": "第一章 总则",
+          "order_no": 1,
+          "content": "生源地信用助学贷款由国家开发银行等金融机构向符合条件的家庭经济困难学生发放。"
+        },
+        {
+          "id": "c034",
+          "version_id": "v008",
+          "clause_no": "第二条",
+          "section_path": "第二章 贷款额度",
+          "order_no": 2,
+          "content": "全日制普通本专科学生每人每年贷款额度最高 12000 元，用于支付学费和住宿费。"
+        },
+        {
+          "id": "c035",
+          "version_id": "v008",
+          "clause_no": "第三条",
+          "section_path": "第三章 贷款期限",
+          "order_no": 3,
+          "content": "贷款期限为学制年限加 15 年，最长不超过 22 年。"
+        },
+        {
+          "id": "c036",
+          "version_id": "v008",
+          "clause_no": "第四条",
+          "section_path": "第四章 贴息政策",
+          "order_no": 4,
+          "content": "学生在校期间的贷款利息由财政全额补贴，毕业后开始承担利息。"
+        }
+      ]
+    },
+    {
+      "id": "v009",
+      "document_id": "d007",
+      "version_no": "2025版",
+      "status": "ACTIVE",
+      "effective_date": "2025-09-01",
+      "expiry_date": null,
+      "replaced_by": null,
+      "published_date": "2025-07-05",
+      "summary": "2025 修订：贷款额度提高到 16000 元，毕业后增设只还息宽限期",
+      "chunks": [
+        {
+          "id": "c037",
+          "version_id": "v009",
+          "clause_no": "第一条",
+          "section_path": "第一章 总则",
+          "order_no": 1,
+          "content": "生源地信用助学贷款由国家开发银行等金融机构向符合条件的家庭经济困难学生发放，用于支付学费和住宿费。"
+        },
+        {
+          "id": "c038",
+          "version_id": "v009",
+          "clause_no": "第二条",
+          "section_path": "第二章 贷款额度",
+          "order_no": 2,
+          "content": "全日制普通本专科学生每人每年贷款额度最高 16000 元。"
+        },
+        {
+          "id": "c039",
+          "version_id": "v009",
+          "clause_no": "第三条",
+          "section_path": "第三章 贷款期限",
+          "order_no": 3,
+          "content": "贷款期限为学制年限加 15 年，最长不超过 22 年。"
+        },
+        {
+          "id": "c040",
+          "version_id": "v009",
+          "clause_no": "第四条",
+          "section_path": "第四章 贴息政策",
+          "order_no": 4,
+          "content": "学生在校期间利息由财政全额补贴，毕业后 5 年内只需偿还利息，第 6 年起偿还本金。"
+        }
+      ]
+    }
+  ]
+}

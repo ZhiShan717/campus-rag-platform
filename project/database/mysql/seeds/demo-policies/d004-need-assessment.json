@@ -1,0 +1,67 @@
+{
+  "document": {
+    "id": "d004",
+    "title": "家庭经济困难学生认定办法",
+    "doc_no": "〔演示〕学字2023-15号",
+    "issuer": "学生工作处",
+    "category": "NEED_ASSESSMENT",
+    "source_type": "FAKE_DEMO",
+    "source_note": "虚构演示数据，不对应任何真实校发文件",
+    "created_at": "2026-10-24T10:15:00+08:00"
+  },
+  "versions": [
+    {
+      "id": "v005",
+      "document_id": "d004",
+      "version_no": "2023版",
+      "status": "ACTIVE",
+      "effective_date": "2023-09-01",
+      "expiry_date": null,
+      "replaced_by": null,
+      "published_date": "2023-06-30",
+      "summary": "现行版本",
+      "chunks": [
+        {
+          "id": "c020",
+          "version_id": "v005",
+          "clause_no": "第一条",
+          "section_path": "第一章 总则",
+          "order_no": 1,
+          "content": "家庭经济困难学生认定结果是申请国家助学金、国家励志奖学金和勤工助学岗位的前提条件。"
+        },
+        {
+          "id": "c021",
+          "version_id": "v005",
+          "clause_no": "第二条",
+          "section_path": "第二章 认定等级",
+          "order_no": 2,
+          "content": "认定结果分为特别困难、困难、一般困难三档，分别对应不同的资助力度。"
+        },
+        {
+          "id": "c022",
+          "version_id": "v005",
+          "clause_no": "第三条",
+          "section_path": "第三章 申请材料",
+          "order_no": 3,
+          "content": "申请学生须提交家庭经济情况说明及相应证明材料，并对材料真实性负责，提供虚假材料者取消当年认定资格。"
+        },
+        {
+          "id": "c023",
+          "version_id": "v005",
+          "clause_no": "第四条",
+          "section_path": "第四章 认定程序",
+          "order_no": 4,
+          "content": "每年 9 月集中受理认定申请，班级评议、学院审核后公示 5 个工作日。"
+        },
+        {
+          "id": "c024",
+          "version_id": "v005",
+          "clause_no": "第五条",
+          "section_path": "第五章 结果管理",
+          "order_no": 5,
+          "content": "认定结果有效期为一个学年，家庭经济状况发生重大变化的，可随时申请复核。"
+        }
+      ]
+    }
+  ]
+}

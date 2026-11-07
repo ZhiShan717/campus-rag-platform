@@ -1,0 +1,88 @@
+{
+  "dataset": "campus-rag-demo-policies",
+  "updated_at": "2026-10-25",
+  "documents": [
+    {
+      "file": "d001-national-scholarship.json",
+      "document_id": "d001",
+      "title": "国家奖学金评审办法",
+      "category": "NATIONAL_SCHOLARSHIP",
+      "versions": [
+        { "version_id": "v001", "version_no": "2021版", "status": "SUPERSEDED", "effective_date": "2021-09-01", "expiry_date": "2024-08-31", "replaced_by": "v002", "chunks": 5 },
+        { "version_id": "v002", "version_no": "2024版", "status": "ACTIVE", "effective_date": "2024-09-01", "expiry_date": null, "replaced_by": null, "chunks": 5 }
+      ]
+    },
+    {
+      "file": "d002-national-inspiration.json",
+      "document_id": "d002",
+      "title": "国家励志奖学金实施办法",
+      "category": "NATIONAL_INSPIRATION",
+      "versions": [
+        { "version_id": "v003", "version_no": "2023版", "status": "ACTIVE", "effective_date": "2023-09-01", "expiry_date": null, "replaced_by": null, "chunks": 5 }
+      ]
+    },
+    {
+      "file": "d003-school-scholarship.json",
+      "document_id": "d003",
+      "title": "校级优秀学生奖学金评定办法",
+      "category": "SCHOOL_SCHOLARSHIP",
+      "versions": [
+        { "version_id": "v004", "version_no": "2022版", "status": "ACTIVE", "effective_date": "2022-03-01", "expiry_date": null, "replaced_by": null, "chunks": 4 }
+      ]
+    },
+    {
+      "file": "d004-need-assessment.json",
+      "document_id": "d004",
+      "title": "家庭经济困难学生认定办法",
+      "category": "NEED_ASSESSMENT",
+      "versions": [
+        { "version_id": "v005", "version_no": "2023版", "status": "ACTIVE", "effective_date": "2023-09-01", "expiry_date": null, "replaced_by": null, "chunks": 5 }
+      ]
+    },
+    {
+      "file": "d005-national-grant-abolished.json",
+      "document_id": "d005",
+      "title": "国家助学金管理办法",
+      "category": "NATIONAL_GRANT",
+      "versions": [
+        { "version_id": "v006", "version_no": "2019版", "status": "ABOLISHED", "effective_date": "2019-09-01", "expiry_date": "2025-08-31", "replaced_by": null, "chunks": 4 }
+      ]
+    },
+    {
+      "file": "d006-work-study-pending.json",
+      "document_id": "d006",
+      "title": "勤工助学管理办法",
+      "category": "WORK_STUDY",
+      "versions": [
+        { "version_id": "v007", "version_no": "2026版", "status": "PENDING", "effective_date": "2027-03-01", "expiry_date": null, "replaced_by": null, "chunks": 4 }
+      ]
+    },
+    {
+      "file": "d007-student-loan.json",
+      "document_id": "d007",
+      "title": "生源地信用助学贷款实施细则",
+      "category": "STUDENT_LOAN",
+      "versions": [
+        { "version_id": "v008", "version_no": "2020版", "status": "SUPERSEDED", "effective_date": "2020-09-01", "expiry_date": "2025-08-31", "replaced_by": "v009", "chunks": 4 },
+        { "version_id": "v009", "version_no": "2025版", "status": "ACTIVE", "effective_date": "2025-09-01", "expiry_date": null, "replaced_by": null, "chunks": 4 }
+      ]
+    },
+    {
+      "file": "d008-temporary-aid.json",
+      "document_id": "d008",
+      "title": "校级临时困难补助办法",
+      "category": "NEED_ASSESSMENT",
+      "versions": [
+        { "version_id": "v010", "version_no": "2024版", "status": "ACTIVE", "effective_date": "2024-09-01", "expiry_date": null, "replaced_by": null, "chunks": 3 }
+      ]
+    }
+  ],
+  "totals": {
+    "documents": 8,
+    "versions": 10,
+    "chunks": 43,
+    "by_status": { "ACTIVE": 6, "SUPERSEDED": 2, "ABOLISHED": 1, "PENDING": 1 },
+    "by_source_type": { "FAKE_DEMO": 8, "PUBLIC": 0 }
+  }
+}
+

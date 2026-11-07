@@ -1,0 +1,59 @@
+{
+  "document": {
+    "id": "d005",
+    "title": "国家助学金管理办法",
+    "doc_no": "〔演示〕学字2019-05号",
+    "issuer": "学生工作处",
+    "category": "NATIONAL_GRANT",
+    "source_type": "FAKE_DEMO",
+    "source_note": "虚构演示数据，用于演示「已废止制度不得作为依据」的检索行为",
+    "created_at": "2026-10-24T10:20:00+08:00"
+  },
+  "versions": [
+    {
+      "id": "v006",
+      "document_id": "d005",
+      "version_no": "2019版",
+      "status": "ABOLISHED",
+      "effective_date": "2019-09-01",
+      "expiry_date": "2025-08-31",
+      "replaced_by": null,
+      "published_date": "2019-07-01",
+      "summary": "2025 年 8 月 31 日废止，后续办法尚未发布",
+      "chunks": [
+        {
+          "id": "c025",
+          "version_id": "v006",
+          "clause_no": "第一条",
+          "section_path": "第一章 总则",
+          "order_no": 1,
+          "content": "为资助家庭经济困难学生的生活费用开支，学校设立国家助学金。"
+        },
+        {
+          "id": "c026",
+          "version_id": "v006",
+          "clause_no": "第二条",
+          "section_path": "第二章 资助标准",
+          "order_no": 2,
+          "content": "国家助学金平均每人每年 3300 元，按困难等级分档发放。"
+        },
+        {
+          "id": "c027",
+          "version_id": "v006",
+          "clause_no": "第三条",
+          "section_path": "第三章 申请条件",
+          "order_no": 3,
+          "content": "申请学生须已通过家庭经济困难认定，且在校期间无纪律处分记录。"
+        },
+        {
+          "id": "c028",
+          "version_id": "v006",
+          "clause_no": "第四条",
+          "section_path": "第四章 发放方式",
+          "order_no": 4,
+          "content": "国家助学金按学期分两次发放至学生本人银行卡，不得由他人代领。"
+        }
+      ]
+    }
+  ]
+}
